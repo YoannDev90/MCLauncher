@@ -4,6 +4,7 @@
         Title="MCLauncher"
         Icon="avares://MCLauncher/ressources/sources/logo.ico"
         Width="1200" Height="600"
+        WindowState="Maximized"
         TransparencyLevelHint="AcrylicBlur"
         Background="Transparent"
         ExtendClientAreaToDecorationsHint="True">
@@ -112,62 +113,6 @@
                 </Button>
             </Grid>
         </Border>
-
-
-        <!-- Boîte de gauche (contenu principal) -->
-        <StackPanel Spacing="15"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Center">
-
-            <!-- Pseudo -->
-            <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
-                <TextBlock Text="Pseudo :" Width="100" />
-                <TextBox x:Name="UsernameBox" Width="200" Text="Player" />
-            </StackPanel>
-
-            <!-- RAM -->
-            <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
-                <TextBlock Text="RAM (MB) :" Width="100" />
-                <Slider x:Name="RamSlider" Minimum="1024" Maximum="16384" Value="4096" Width="200" />
-                <TextBlock x:Name="RamValue" Text="{Binding Value, ElementName=RamSlider}" Width="50" />
-            </StackPanel>
-
-            <!-- Loader Selector -->
-            <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
-                <TextBlock Text="Loader :" Width="100" />
-                <ComboBox x:Name="LoaderComboBox" Width="200">
-                    <ComboBoxItem Content="Vanilla" Tag="vanilla" IsSelected="True" />
-                    <ComboBoxItem Content="Forge" Tag="forge" />
-                    <ComboBoxItem Content="Fabric" Tag="fabric" />
-                    <ComboBoxItem Content="Quilt" Tag="quilt" />
-                </ComboBox>
-            </StackPanel>
-
-            <!-- Type de version (CheckBox) -->
-            <StackPanel Orientation="Horizontal" Spacing="20" HorizontalAlignment="Center">
-                <ToggleButton x:Name="ReleaseCheckBox" IsChecked="True" Content="Release" />
-                <ToggleButton x:Name="SnapshotCheckBox" IsChecked="True" Content="Snapshot" />
-                <ToggleButton x:Name="AlphaCheckBox" IsChecked="False" Content="Alpha" />
-                <ToggleButton x:Name="BetaCheckBox" IsChecked="False" Content="Beta" />
-            </StackPanel>
-
-            <!-- Version -->
-            <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
-                <TextBlock Text="Version :" Width="100" />
-                <ComboBox x:Name="VersionComboBox" Width="200" />
-            </StackPanel>
-
-            <!-- Bouton de lancement -->
-            <Button x:Name="LaunchButton" Content="Lancer Minecraft" Width="200" HorizontalAlignment="Center"
-                    Background="#80000000" Opacity="0.7" CornerRadius="8">
-                <Button.Styles>
-                    <Style Selector="Button:pointerover">
-                        <Setter Property="Background" Value="#A0000000" />
-                        <Setter Property="Opacity" Value="0.9" />
-                    </Style>
-                </Button.Styles>
-            </Button>
-        </StackPanel>
 
         <!-- Bannière du bas (copyright, partenaires) -->
         <Border Background="#80000000" VerticalAlignment="Bottom" Height="55" Padding="10" CornerRadius="0">
