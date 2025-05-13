@@ -1,27 +1,28 @@
 using System.Diagnostics;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using CmlLib.Core;
 
 namespace MCLauncher;
 
 public partial class MainWindow : Window
 {
-    private readonly MinecraftLauncher launcher;
+    //private readonly MinecraftLauncher launcher;
 
     public MainWindow()
     {
         InitializeComponent();
-        launcher = new MinecraftLauncher();
+        //launcher = new MinecraftLauncher();
     }
 
 
-    private void OpenAzurhosts(object? sender, RoutedEventArgs e)
-    {
-        var url = "https://azurhosts.com";
-        var psi = new ProcessStartInfo(url) { UseShellExecute = true };
-        Process.Start(psi);
-    }
+    // private void OpenAzurhosts(object? sender, RoutedEventArgs e)
+    // {
+    //     var url = "https://azurhosts.com";
+    //     var psi = new ProcessStartInfo(url) { UseShellExecute = true };
+    //     Process.Start(psi);
+    // }
+
+    // TODO : Faire la demande de partenariat en ticket à Azurhosts, puis remettre le code ci-dessus
 
     private void OpenGitHub(object? sender, RoutedEventArgs e)
     {
@@ -59,6 +60,10 @@ public partial class MainWindow : Window
     private void Launch(object? sender, RoutedEventArgs e)
     {
         StatusText.Text = "Lancement de l'instance";
-        launcher.
+    }
+
+    private void Delete(object? sender, RoutedEventArgs e)
+    {
+        StatusText.Text = "Suppression de l'instance";
     }
 }

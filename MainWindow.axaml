@@ -131,8 +131,14 @@
                                     <TextBlock Text="Mon Instance" FontWeight="Bold" FontSize="16" />
                                     <TextBlock Text="1.20.4 • Vanilla" FontSize="13" Foreground="#FFB0B0B0" />
                                 </StackPanel>
-                                <Button Content="Lancer" Margin="10" Padding="10,8"
-                                        Background="#3300C853" Foreground="White" CornerRadius="8" Click="Launch" />
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Content="Lancer" Margin="10" Padding="10,8"
+                                            Background="#00FF00" Foreground="White" CornerRadius="8" Click="Launch" />
+                                    <Button Content="Modifier" Margin="10" Padding="10,8"
+                                            Background="#0000FF" Foreground="White" CornerRadius="8" Click="Delete" />
+                                    <Button Content="Supprimer" Margin="10" Padding="10,8"
+                                            Background="#FF0000" Foreground="White" CornerRadius="8" Click="Delete" />
+                                </StackPanel>
                             </StackPanel>
                         </Border>
                     </ListBoxItem>
@@ -165,14 +171,14 @@
                         <Image Source="avares://MCLauncher/ressources/icons/github.png" Width="32" Height="32" />
                     </Button>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right"
+                <!--<StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right"
                             VerticalAlignment="Center" Spacing="4">
                     <TextBlock Text="With our partner " FontSize="14" Foreground="White" VerticalAlignment="Center" />
                     <Button Background="Transparent" BorderThickness="0" Padding="0" VerticalAlignment="Center"
                             Click="OpenAzurhosts">
                         <Image Source="avares://MCLauncher/ressources/sources/azurhosts.png" Height="32" />
                     </Button>
-                </StackPanel>
+                </StackPanel>-->
             </Grid>
         </Border>
     </Grid>
