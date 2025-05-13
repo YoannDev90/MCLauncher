@@ -1,4 +1,3 @@
-using System;
 using System.Diagnostics;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -8,17 +7,12 @@ namespace MCLauncher;
 
 public partial class MainWindow : Window
 {
-    private readonly MinecraftLauncher _launcher;
-    private DateTime[] _allVersionDates = Array.Empty<DateTime>();
-    private bool[] _allVersionIsAlpha = Array.Empty<bool>();
-    private bool[] _allVersionIsBeta = Array.Empty<bool>();
-    private bool[] _allVersionIsRelease = Array.Empty<bool>();
-    private bool[] _allVersionIsSnapshot = Array.Empty<bool>();
-    private string[] _allVersionNames = Array.Empty<string>();
+    private readonly MinecraftLauncher launcher;
 
     public MainWindow()
     {
         InitializeComponent();
+        launcher = new MinecraftLauncher();
     }
 
 
@@ -60,5 +54,11 @@ public partial class MainWindow : Window
         StatusText.Text = "Ouverture des paramètres...";
         var settingsWindow = new SettingsWindow();
         settingsWindow.Show();
+    }
+
+    private void Launch(object? sender, RoutedEventArgs e)
+    {
+        StatusText.Text = "Lancement de l'instance";
+        launcher.
     }
 }

@@ -1,11 +1,13 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="MCLauncher.NewInstanceWindow"
+        xmlns:local="using:MCLauncher"
+        x:DataType="local:NewInstanceWindow"
         Title="Nouvelle instance"
         Width="900" Height="600"
         Icon="avares://MCLauncher/ressources/sources/logo.ico"
         WindowStartupLocation="CenterScreen"
-        Background="Black">
+        Background="#0F0F0F">
 
     <Grid>
         <Grid Margin="20">
@@ -23,100 +25,66 @@
             <!-- Header -->
             <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Orientation="Horizontal" Spacing="16"
                         Margin="0,0,0,16" VerticalAlignment="Center">
-                <Image Source="avares://MCLauncher/ressources/sources/logo.png" Width="40" Height="40" />
+                <Image Source="avares://MCLauncher/ressources/sources/logo.png" Width="48" Height="48" />
                 <StackPanel>
                     <TextBlock Text="Nouvelle instance" FontSize="22" Foreground="White" FontWeight="Bold" />
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <TextBlock Text="Nom :" Foreground="White" VerticalAlignment="Center" />
-                        <TextBox x:Name="InstanceNameBox" Width="200" Height="28" CornerRadius="6"
-                                 Background="#22000000" Foreground="White" BorderThickness="0" Margin="0,0,10,0" />
-                        <TextBlock Text="Groupe :" Foreground="White" VerticalAlignment="Center" />
-                        <ComboBox x:Name="GroupComboBox" Width="120" Height="28" CornerRadius="6"
-                                  Background="#22000000" Foreground="White" BorderThickness="0" />
+                        <TextBox x:Name="InstanceNameBox" Width="200" Height="18" CornerRadius="6"
+                                 Background="Gray" Foreground="White" BorderThickness="0" Margin="0,0,10,0" />
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
 
             <!-- Sidebar -->
-            <StackPanel Grid.Column="0" Grid.Row="1" Spacing="6">
-                <Button Content="Personnalisé" HorizontalAlignment="Stretch" Background="#33FFFFFF"
-                        Foreground="#FF2196F3" CornerRadius="8" Height="38" />
+            <StackPanel Grid.Column="0" Grid.Row="1" Spacing="8">
+                <Button Content="Personnalisé" HorizontalAlignment="Stretch" Background="Transparent"
+                        Foreground="White"
+                        CornerRadius="8" Height="40" />
                 <Button Content="Importer" HorizontalAlignment="Stretch" Background="Transparent" Foreground="White"
-                        CornerRadius="8" Height="38" />
+                        CornerRadius="8" Height="40" />
                 <Button Content="CurseForge" HorizontalAlignment="Stretch" Background="Transparent" Foreground="White"
-                        CornerRadius="8" Height="38" />
+                        CornerRadius="8" Height="40" />
                 <Button Content="Modrinth" HorizontalAlignment="Stretch" Background="Transparent" Foreground="White"
-                        CornerRadius="8" Height="38" />
+                        CornerRadius="8" Height="40" />
             </StackPanel>
 
             <Border Grid.Column="1" Grid.Row="1" Background="#22000000" CornerRadius="10" Padding="12">
-                <StackPanel>
-                    <TextBlock Text="Versions" FontWeight="Bold" FontSize="16" Foreground="White" Margin="0,0,0,8" />
+                <Grid RowDefinitions="Auto,*">
+                    <!-- Titre -->
+                    <TextBlock Grid.Row="0" Text="Versions" FontWeight="Bold" FontSize="16" Foreground="White"
+                               Margin="0,0,0,8" />
 
-                    <!-- ItemsControl pour afficher les versions -->
-                    <ItemsControl>
-                        <ItemsControl.Items>
-                            <StackPanel Orientation="Horizontal" Spacing="10">
-                                <TextBlock Text="Version" Width="150" FontWeight="Bold" />
-                                <TextBlock Text="Date de sortie" Width="140" FontWeight="Bold" />
-                                <TextBlock Text="Type" Width="80" FontWeight="Bold" />
-                            </StackPanel>
-                            <Separator Background="White" Height="1" Margin="0,4,0,4" />
-                            <StackPanel Orientation="Horizontal" Spacing="10">
-                                <TextBlock Text="1.21.5" Width="150" />
-                                <TextBlock Text="25/03/2025" Width="140" />
-                                <TextBlock Text="release" Width="80" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Spacing="10">
-                                <TextBlock Text="1.21.4" Width="150" />
-                                <TextBlock Text="03/12/2024" Width="140" />
-                                <TextBlock Text="release" Width="80" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Spacing="10">
-                                <TextBlock Text="1.21.3" Width="150" />
-                                <TextBlock Text="23/10/2024" Width="140" />
-                                <TextBlock Text="release" Width="80" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Spacing="10">
-                                <TextBlock Text="1.21.1" Width="150" />
-                                <TextBlock Text="08/08/2024" Width="140" />
-                                <TextBlock Text="release" Width="80" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Spacing="10">
-                                <TextBlock Text="1.20.6" Width="150" />
-                                <TextBlock Text="29/04/2024" Width="140" />
-                                <TextBlock Text="release" Width="80" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Spacing="10">
-                                <TextBlock Text="1.20.5" Width="150" />
-                                <TextBlock Text="15/03/2024" Width="140" />
-                                <TextBlock Text="snapshot" Width="80" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Spacing="10">
-                                <TextBlock Text="1.20.4" Width="150" />
-                                <TextBlock Text="01/02/2024" Width="140" />
-                                <TextBlock Text="beta" Width="80" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Spacing="10">
-                                <TextBlock Text="1.20.3" Width="150" />
-                                <TextBlock Text="01/12/2023" Width="140" />
-                                <TextBlock Text="alpha" Width="80" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Spacing="10">
-                                <TextBlock Text="1.20.2" Width="150" />
-                                <TextBlock Text="01/11/2023" Width="140" />
-                                <TextBlock Text="experimental" Width="80" />
-                            </StackPanel>
-                        </ItemsControl.Items>
-                    </ItemsControl>
+                    <!-- Contenu principal -->
+                    <Grid Grid.Row="1" RowDefinitions="*,Auto">
+                        <!-- ListBox avec scroll automatique -->
+                        <ListBox
+                            Grid.Row="0"
+                            x:Name="VersionsListBox"
+                            Background="#22000000"
+                            BorderThickness="0"
+                            ItemsSource="{Binding FilteredVersions}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate x:DataType="local:MinecraftVersion">
+                                    <StackPanel Orientation="Horizontal" Spacing="10">
+                                        <TextBlock Text="{Binding Name}" Width="150" />
+                                        <TextBlock Text="{Binding ReleaseDate, StringFormat='dd/MM/yyyy'}" Width="140" />
+                                        <TextBlock Text="{Binding Type}" Width="80" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
 
-                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
-                        <TextBox x:Name="SearchBox" Watermark="Rechercher..." Width="200" Height="28" CornerRadius="6"
-                                 Background="#11000000" Foreground="White" BorderThickness="0" />
-                        <Button Content="Actualiser" Width="100" Margin="8,0,0,0" Background="#3300C853"
-                                Foreground="White" CornerRadius="8" Click="RefreshButton_Click" />
-                    </StackPanel>
-                </StackPanel>
+                        <!-- Barre de recherche et bouton -->
+                        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,8,0,0">
+                            <TextBox x:Name="SearchBox" Watermark="Rechercher..." Width="200" Height="28"
+                                     CornerRadius="6" Background="#11000000" Foreground="White" BorderThickness="0" />
+                            <Button x:Name="RefreshButton" Content="Actualiser" Width="100" Margin="8,0,0,0"
+                                    Background="#3300C853" Foreground="White" CornerRadius="8"
+                                    Click="RefreshButton_Click" />
+                        </StackPanel>
+                    </Grid>
+                </Grid>
             </Border>
 
 
@@ -125,10 +93,10 @@
                 <StackPanel Spacing="16">
                     <TextBlock Text="Filtre" FontWeight="Bold" FontSize="16" Foreground="White" />
                     <StackPanel>
-                        <CheckBox x:Name="OfficialCheckBox" Content="Versions officielles" IsChecked="True"
+                        <CheckBox x:Name="OfficialCheckBox" Content="Releases" IsChecked="True"
                                   Foreground="White" />
-                        <CheckBox x:Name="SnapshotCheckBox" Content="Snapshots" IsChecked="True" Foreground="White" />
-                        <CheckBox x:Name="OldCheckBox" Content="Old" IsChecked="False" Foreground="White" />
+                        <CheckBox x:Name="SnapshotCheckBox" Content="Snapshots" IsChecked="False" Foreground="White" />
+                        <CheckBox x:Name="OldCheckBox" Content="Olds" IsChecked="False" Foreground="White" />
                     </StackPanel>
                     <TextBlock Text="Chargeur de Mod" FontWeight="Bold" FontSize="16" Foreground="White"
                                Margin="0,12,0,0" />
@@ -140,17 +108,22 @@
                         <RadioButton x:Name="QuiltRadio" Content="Quilt" Foreground="White" />
                         <RadioButton x:Name="LiteLoaderRadio" Content="LiteLoader" Foreground="White" />
                     </StackPanel>
+                    <Button x:Name="CancelButton" Content="Annuler" Width="110" Background="#33F44336"
+                            Foreground="White"
+                            CornerRadius="8" />
+                    <Button x:Name="OkButton" Content="OK" Width="110" Background="#3300C853" Foreground="White"
+                            CornerRadius="8" />
                 </StackPanel>
             </Border>
-
-            <!-- Bas de fenêtre : boutons -->
-            <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Orientation="Horizontal"
-                        HorizontalAlignment="Right" Spacing="12" Margin="0,18,0,0">
-                <Button x:Name="CancelButton" Content="Annuler" Width="110" Background="#33F44336" Foreground="White"
-                        CornerRadius="8" />
-                <Button x:Name="OKButton" Content="OK" Width="110" Background="#3300C853" Foreground="White"
-                        CornerRadius="8" />
-            </StackPanel>
         </Grid>
+        <!-- Bannière du bas (copyright, partenaires) -->
+        <!-- <Border Background="Black" VerticalAlignment="Bottom" Height="55" Padding="10" CornerRadius="0"> -->
+        <!--     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" -->
+        <!--                 HorizontalAlignment="Left" Spacing="10"> -->
+        <!--         <Image Source="avares://MCLauncher/ressources/icons/console.png" Width="24" Height="24" /> -->
+        <!--         <TextBlock x:Name="StatusText" Text="Prêt à lancer..." Foreground="White" FontSize="14" -->
+        <!--                    HorizontalAlignment="Left" VerticalAlignment="Center" /> -->
+        <!--     </StackPanel> -->
+        <!-- </Border> -->
     </Grid>
 </Window>

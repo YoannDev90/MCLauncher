@@ -4,8 +4,6 @@
         Title="Nouvelle Instance"
         Width="400" Height="300">
     <StackPanel Margin="10">
-        <TextBlock Text="Nom de l'instance :" Margin="0,0,0,5" />
-        <TextBox x:Name="InstanceNameBox" Margin="0,0,0,10" />
         <!-- Ajoute d'autres contrôles ici -->
     </StackPanel>
 </Window>

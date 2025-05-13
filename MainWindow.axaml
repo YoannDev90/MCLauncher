@@ -3,28 +3,22 @@
         x:Class="MCLauncher.MainWindow"
         Title="MCLauncher"
         Icon="avares://MCLauncher/ressources/sources/logo.ico"
-        Width="1200" Height="600"
+        MinWidth="900" MinHeight="600"
         WindowState="Maximized"
         TransparencyLevelHint="AcrylicBlur"
-        Background="Transparent"
+        Background="DimGray"
         ExtendClientAreaToDecorationsHint="True">
-    <Grid>
-        <!-- Effet acrylique -->
-        <ExperimentalAcrylicBorder IsHitTestVisible="False">
-            <ExperimentalAcrylicBorder.Material>
-                <ExperimentalAcrylicMaterial
-                    BackgroundSource="Digger"
-                    TintColor="Black"
-                    TintOpacity="0.4"
-                    MaterialOpacity="0.65" />
-            </ExperimentalAcrylicBorder.Material>
-        </ExperimentalAcrylicBorder>
 
-        <!-- Image de fond -->
-        <Image Source="avares://MCLauncher/ressources/sources/wallpaper.png" Stretch="UniformToFill" Opacity="0.7" />
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
         <!-- Bannière du haut (titre + boutons) -->
-        <Border Background="#80000000" VerticalAlignment="Top" Height="60" Padding="10" CornerRadius="0">
+        <Border Background="#80000000" Height="60" Padding="10" CornerRadius="0" Grid.Row="0">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -114,8 +108,42 @@
             </Grid>
         </Border>
 
+
+        <Border Grid.Row="1"
+                Background="#80000000">
+            <Grid RowDefinitions="Auto,*">
+                <TextBlock Grid.Row="0"
+                           Text="Instances"
+                           FontWeight="Bold"
+                           FontSize="18"
+                           Margin="14, 0" />
+                <ListBox Grid.Row="1"
+                         x:Name="InstancesListBox"
+                         Background="Transparent"
+                         BorderThickness="0"
+                         SelectionMode="Single">
+                    <ListBoxItem>
+                        <Border Background="#3300C853" CornerRadius="8" Padding="15" Margin="0">
+                            <StackPanel Orientation="Horizontal" Spacing="16" VerticalAlignment="Center">
+                                <Image Source="avares://MCLauncher/ressources/sources/logo.png" Width="40"
+                                       Height="40" />
+                                <StackPanel Orientation="Vertical" Width="200">
+                                    <TextBlock Text="Mon Instance" FontWeight="Bold" FontSize="16" />
+                                    <TextBlock Text="1.20.4 • Vanilla" FontSize="13" Foreground="#FFB0B0B0" />
+                                </StackPanel>
+                                <Button Content="Lancer" Margin="10" Padding="10,8"
+                                        Background="#3300C853" Foreground="White" CornerRadius="8" Click="Launch" />
+                            </StackPanel>
+                        </Border>
+                    </ListBoxItem>
+                </ListBox>
+            </Grid>
+        </Border>
+
+
         <!-- Bannière du bas (copyright, partenaires) -->
-        <Border Background="#80000000" VerticalAlignment="Bottom" Height="55" Padding="10" CornerRadius="0">
+        <Border Grid.Row="2" Background="#80000000" VerticalAlignment="Bottom" Height="55" Padding="10"
+                CornerRadius="0">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
