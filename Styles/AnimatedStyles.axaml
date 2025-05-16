@@ -1,0 +1,32 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <!-- Animation de base pour les boutons -->
+    <Style Selector="Button">
+        <Setter Property="Transitions">
+            <Transitions>
+                <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.2"/>
+                <DoubleTransition Property="Opacity" Duration="0:0:0.2"/>
+            </Transitions>
+        </Setter>
+    </Style>
+    
+    <!-- Animation au survol des boutons -->
+    <Style Selector="Button:pointerover">
+        <Setter Property="RenderTransform" Value="scale(1.05)"/>
+        <Setter Property="Opacity" Value="0.9"/>
+    </Style>
+    
+    <!-- Animation au clic des boutons -->
+    <Style Selector="Button:pressed">
+        <Setter Property="RenderTransform" Value="scale(0.95)"/>
+    </Style>
+    
+    <!-- Style pour les fenêtres -->
+    <Style Selector="Window">
+        <Setter Property="Background" Value="#1a1a1a"/>
+        <Setter Property="TransparencyLevelHint" Value="AcrylicBlur"/>
+        <Setter Property="ExtendClientAreaToDecorationsHint" Value="True"/>
+        <Setter Property="ExtendClientAreaChromeHints" Value="PreferSystemChrome"/>
+    </Style>
+</Styles>
