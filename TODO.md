@@ -1,0 +1,28 @@
+TODO :
+
+- [ ] Détecter les instances existantes pour les mettre à jour dans la page principale
+- [ ] Créer une page web simple pour présenter rapidement le projet
+- [ ] Créer un fichier de configuration pour chaque instance
+- [ ] Ajouter le support de fichiers de configuration d'autres launchers pour assurer une compatibilité
+- [ ] Ajouter le support Fabric
+- [ ] Ajouter le support Forge
+- [ ] Ajouter le support Quilt
+- [ ] Ajouter le support NeoForge
+- [ ] Ajouter le support de CurseForge
+- [ ] Ajouter le support de Modrinth
+- [ ] Ajouter le support de MultiMC
+- [ ] Ajouter le support de GDLauncher
+- [ ] Ajouter le support de Prism Launcher
+- [ ] Ajouter le support de ATLauncher
+- [ ] Ajouter la création de modpacks
+- [ ] Ajouter la création de packs de ressources
+- [ ] Ajouter le support de plusieurs langues
+- [ ] Ajouter le support de compte Microsoft et Mojang
+- [ ] Ajouter le support de compte ElyBy pour les skins
+- [ ] Ajouter le support de compte ElyBy pour les capes
+- [ ] Ajouter le support de l'overlay Discord
+- [ ] Permettre l'utilisation de packs d'icones personnalisés
+- [ ] Faire un système de mise à jour automatique
+- [ ] Ajouter un système de rapport de bug
+- [ ] Ajouter un système de rapport de crash
+- [ ] Faire un partenariat avec des hébergeurs de serveurs Minecraft (AzurHosts)

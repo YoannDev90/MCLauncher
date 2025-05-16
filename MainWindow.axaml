@@ -154,22 +154,12 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center"
                             HorizontalAlignment="Left" Spacing="10">
                     <Image Source="avares://MCLauncher/ressources/icons/console.png" Width="24" Height="24" />
                     <TextBlock x:Name="StatusText" Text="Prêt à lancer..." Foreground="White" FontSize="14"
                                HorizontalAlignment="Left" VerticalAlignment="Center" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Center"
-                            VerticalAlignment="Center" Spacing="4">
-                    <TextBlock Text="Made by Yoann" FontSize="14" Foreground="White" VerticalAlignment="Center" />
-                    <TextBlock Text="• Open Source •" FontSize="14" Foreground="White" VerticalAlignment="Center" />
-                    <Button Background="Transparent" BorderThickness="0" Padding="0" VerticalAlignment="Center"
-                            Click="OpenGitHub">
-                        <Image Source="avares://MCLauncher/ressources/icons/github.png" Width="32" Height="32" />
-                    </Button>
                 </StackPanel>
                 <!--<StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right"
                             VerticalAlignment="Center" Spacing="4">
