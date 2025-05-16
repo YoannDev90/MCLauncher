@@ -1,9 +1,50 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="MCLauncher.AccountsWindow"
-        Title="Nouvelle Instance"
-        Width="400" Height="300">
-    <StackPanel Margin="10">
-        <!-- Ajoute d'autres contrôles ici -->
-    </StackPanel>
+        Title="Gestion des comptes"
+        Width="800" Height="600"
+        WindowStartupLocation="CenterScreen"
+        Background="#1a1a1a"
+        TransparencyLevelHint="AcrylicBlur"
+        ExtendClientAreaToDecorationsHint="True">
+    
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- En-tête -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="16" Margin="0,0,0,20">
+            <Image Source="avares://MCLauncher/ressources/icons/users.png" Width="32" Height="32"/>
+            <TextBlock Text="Gestion des comptes" FontSize="24" FontWeight="Bold" VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <!-- Liste des comptes -->
+        <Border Grid.Row="1" Background="#22000000" CornerRadius="8" Padding="16">
+            <Grid RowDefinitions="Auto,*">
+                <TextBlock Text="Comptes Minecraft" FontWeight="Bold" FontSize="18" Margin="0,0,0,16"/>
+                
+                <ListBox Grid.Row="1" Background="Transparent">
+                    <ListBoxItem>
+                        <Grid ColumnDefinitions="Auto,*,Auto" Width="700">
+                            <Image Grid.Column="0" Source="avares://MCLauncher/ressources/icons/user.png" Width="48" Height="48" Margin="0,0,16,0"/>
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                <TextBlock Text="Nom du compte" FontWeight="Bold"/>
+                                <TextBlock Text="email@example.com" Opacity="0.7"/>
+                            </StackPanel>
+                            <Button Grid.Column="2" Content="Supprimer" Background="#33FF0000"/>
+                        </Grid>
+                    </ListBoxItem>
+                </ListBox>
+            </Grid>
+        </Border>
+
+        <!-- Boutons d'action -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8" Margin="0,16,0,0">
+            <Button Content="Ajouter un compte Microsoft" Background="#3300C853"/>
+            <Button Content="Ajouter un compte Offline"/>
+        </StackPanel>
+    </Grid>
 </Window>

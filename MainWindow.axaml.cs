@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using System;
 
 namespace MCLauncher;
 
@@ -52,9 +53,21 @@ public partial class MainWindow : Window
 
     private void SettingsButton_Click(object? sender, RoutedEventArgs e)
     {
-        StatusText.Text = "Ouverture des paramètres...";
-        var settingsWindow = new SettingsWindow();
-        settingsWindow.Show();
+        try
+        {
+            StatusText.Text = "Ouverture des paramètres...";
+            
+            // Créer une nouvelle instance de la fenêtre des paramètres
+            var settingsWindow = new SimpleSettingsWindow();
+            
+            // Afficher la fenêtre
+            settingsWindow.Show();
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Erreur d'ouverture des paramètres: {ex}");
+            StatusText.Text = "Erreur: impossible d'ouvrir les paramètres";
+        }
     }
 
     private void Launch(object? sender, RoutedEventArgs e)

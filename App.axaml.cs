@@ -4,7 +4,7 @@ using Avalonia.Markup.Xaml;
 
 namespace MCLauncher;
 
-public class App : Application
+public partial class App : Application
 {
     public override void Initialize()
     {
@@ -14,7 +14,11 @@ public class App : Application
     public override void OnFrameworkInitializationCompleted()
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
             desktop.MainWindow = new MainWindow();
+            
+            // Suppression de la partie causant l'erreur (UnhandledException n'est pas disponible)
+        }
 
         base.OnFrameworkInitializationCompleted();
     }
