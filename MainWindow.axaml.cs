@@ -58,7 +58,7 @@ public partial class MainWindow : Window
             StatusText.Text = "Ouverture des paramètres...";
             
             // Créer une nouvelle instance de la fenêtre des paramètres
-            var settingsWindow = new SimpleSettingsWindow();
+            var settingsWindow = new SettingsWindow();
             
             // Afficher la fenêtre
             settingsWindow.Show();
