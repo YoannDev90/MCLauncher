@@ -19,3 +19,5 @@ bin/
 
 ressources/sources/azurhosts.png
 # En attendant une version stable et un vrai partenariat avec eux
+.vscode
+MCLauncher-Yoann-FORK.sln

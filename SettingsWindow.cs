@@ -1,8 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Media;
-using Avalonia.Threading;
 using Avalonia.Markup.Xaml;
 using System;
 using System.Diagnostics;
@@ -10,191 +8,163 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using Avalonia.Platform.Storage;
 
 namespace MCLauncher;
 
 public partial class SettingsWindow : Window
 {
-    private TextBlock? memoryValueText;
-    private TextBlock? availableMemoryText;
-    private Slider? memorySlider;
-    private CheckBox? devModeCheckBox;
-    private StackPanel? devModeOptionsPanel;
-    private TextBox? javaPathTextBox;
-    private ComboBox? themeComboBox;
-    
-    // Notifications temporaires
-    private Border? notificationBorder;
-
     // Chemin du fichier de configuration
-    private readonly string _settingsFilePath = Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), 
-        "MCLauncher", 
-        "settings.json");
+    private readonly string _settingsFilePath;
     
     // Configuration actuelle
-    private Settings _currentSettings;
-
+    private AppSettings _currentSettings;
+    
     public SettingsWindow()
     {
-        try
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"Erreur lors de l'initialisation de la fenêtre des paramètres: {ex}");
-        }
-        Title = "Paramètres";
-        // Ici, ajoute les contrôles pour les options du launcher
-
-        // Initialiser les contrôles après le chargement
-        Loaded += SettingsWindow_Loaded;
-
-        // Créer la notification
-        SetupNotification();
-
-        // Charger les paramètres
-        _currentSettings = LoadSettings();
-    }
-
-    private void SetupNotification()
-    {
-        // Création de la notification
-        notificationBorder = new Border
-        {
-            Background = new SolidColorBrush(Color.Parse("#333333")),
-            CornerRadius = new CornerRadius(8),
-            Padding = new Thickness(16, 12),
-            HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center,
-            VerticalAlignment = Avalonia.Layout.VerticalAlignment.Bottom,
-            Margin = new Thickness(0, 0, 0, 20),
-            Opacity = 0,
-            IsVisible = false,
-            BoxShadow = new BoxShadows(new BoxShadow
-            {
-                OffsetX = 0,
-                OffsetY = 2,
-                Blur = 10,
-                Spread = 0,
-                Color = Color.Parse("#40000000")
-            }),
-        };
-
-        // Transitions pour animation
-        notificationBorder.Transitions = new Avalonia.Animation.Transitions
-        {
-            new Avalonia.Animation.DoubleTransition
-            {
-                Property = Border.OpacityProperty,
-                Duration = TimeSpan.FromSeconds(0.3)
-            }
-        };
-
-        var notificationText = new TextBlock
-        {
-            Name = "NotificationText",
-            FontWeight = FontWeight.Medium
-        };
+        InitializeComponent();
         
-        notificationBorder.Child = notificationText;
-        
-        // Ajout de la notification au Visual Tree
-        this.AttachedToVisualTree += (s, e) =>
-        {
-            var overlayPanel = new Panel();
-            overlayPanel.Children.Add(notificationBorder);
+        // Définition du chemin des paramètres
+        _settingsFilePath = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), 
+            "MCLauncher", 
+            "settings.json");
             
-            // On ajoute le panel d'overlay après le content principal
-            if (this.Content is Grid mainGrid)
-            {
-                var parentPanel = new Panel();
-                this.Content = parentPanel;
-                
-                parentPanel.Children.Add(mainGrid);
-                parentPanel.Children.Add(overlayPanel);
-            }
-        };
+        // Chargement des paramètres
+        _currentSettings = LoadSettings();
+        
+        // Configuration après le chargement de la fenêtre
+        this.Loaded += SettingsWindow_Loaded;
+    }
+    
+    private void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
     }
 
     private void SettingsWindow_Loaded(object? sender, RoutedEventArgs e)
     {
-        memoryValueText = this.FindControl<TextBlock>("MemoryValueText");
-        availableMemoryText = this.FindControl<TextBlock>("AvailableMemoryText");
-        memorySlider = this.FindControl<Slider>("MemorySlider");
-        devModeCheckBox = this.FindControl<CheckBox>("DevModeCheckBox");
-        devModeOptionsPanel = this.FindControl<StackPanel>("DevModeOptionsPanel");
-        javaPathTextBox = this.FindControl<TextBox>("JavaPathTextBox");
-        themeComboBox = this.FindControl<ComboBox>("ThemeComboBox");
-        
-        // Initialiser les valeurs
-        if (memorySlider != null)
+        try
         {
-            memorySlider.Value = _currentSettings.MemoryAllocationGB;
-            UpdateMemoryText((double)memorySlider.Value);
+            // Configuration des contrôles
+            SetupJavaControls();
+            SetupMemoryControls();
+            SetupThemeControls();
+            SetupDeveloperModeControls();
+            SetupCheckboxControls();
+            
+            // Mise à jour des informations système
+            UpdateSystemInfo();
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Erreur lors de l'initialisation des paramètres: {ex}");
+        }
+    }
+    
+    private void SetupJavaControls()
+    {
+        // Configuration du bouton de recherche de Java
+        var browseButton = this.FindControl<Button>("BrowseButton");
+        if (browseButton != null)
+        {
+            browseButton.Click += BrowseButton_Click;
         }
         
-        // Mettre à jour l'information sur la mémoire disponible
-        UpdateAvailableMemoryInfo();
+        // Configuration du bouton de détection automatique
+        var autoDetectButton = this.FindControl<Button>("AutoDetectButton");
+        if (autoDetectButton != null)
+        {
+            autoDetectButton.Click += AutoDetectJava;
+        }
         
-        // Charger le chemin Java
-        if (javaPathTextBox != null)
+        // Affichage du chemin Java actuel
+        var javaPathTextBox = this.FindControl<TextBox>("JavaPathTextBox");
+        if (javaPathTextBox != null && !string.IsNullOrEmpty(_currentSettings.JavaPath))
         {
             javaPathTextBox.Text = _currentSettings.JavaPath;
         }
+    }
+    
+    private void SetupMemoryControls()
+    {
+        // Configuration du slider mémoire
+        var memorySlider = this.FindControl<Slider>("MemorySlider");
+        var memoryValueText = this.FindControl<TextBlock>("MemoryValueText");
+        var memoryProgressBar = this.FindControl<ProgressBar>("MemoryProgressBar");
         
-        // Définir l'état du mode développeur
-        if (devModeCheckBox != null && devModeOptionsPanel != null)
+        if (memorySlider != null && memoryValueText != null && memoryProgressBar != null)
         {
-            bool devModeEnabled = _currentSettings.DeveloperMode;
-            devModeCheckBox.IsChecked = devModeEnabled;
-            devModeOptionsPanel.IsVisible = devModeEnabled;
+            // Définir la valeur initiale
+            memorySlider.Value = _currentSettings.MemoryAllocationGB;
+            memoryProgressBar.Value = _currentSettings.MemoryAllocationGB;
+            UpdateMemoryText(_currentSettings.MemoryAllocationGB);
+            
+            // Configurer l'événement de changement
+            memorySlider.ValueChanged += (s, args) =>
+            {
+                int value = (int)args.NewValue;
+                UpdateMemoryText(value);
+                memoryProgressBar.Value = value;
+                _currentSettings.MemoryAllocationGB = value;
+                SaveSettings();
+            };
         }
-        
-        // Charger le thème
+    }
+    
+    private void UpdateMemoryText(int memoryValue)
+    {
+        var memoryValueText = this.FindControl<TextBlock>("MemoryValueText");
+        if (memoryValueText != null)
+        {
+            memoryValueText.Text = $"{memoryValue} Go alloués";
+        }
+    }
+    
+    private void SetupThemeControls()
+    {
+        // Configuration de la ComboBox du thème
+        var themeComboBox = this.FindControl<ComboBox>("ThemeComboBox");
         if (themeComboBox != null)
         {
             themeComboBox.SelectedIndex = _currentSettings.ThemeIndex;
-        }
-
-        // Configurer le bouton Lucky pour ouvrir le lien
-        var luckyButton = this.FindControl<Button>("LuckyButton");
-        if (luckyButton != null)
-        {
-            luckyButton.Click += OnLuckyLinkClicked;
-        }
-        
-        // Configurer le changement de la valeur du slider mémoire
-        if (memorySlider != null && memoryValueText != null)
-        {
-            memorySlider.ValueChanged += (s, args) => 
+            themeComboBox.SelectionChanged += (s, args) =>
             {
-                int memoryValue = (int)args.NewValue;
-                memoryValueText.Text = $"{memoryValue} Go alloués";
-                _currentSettings.MemoryAllocationGB = memoryValue;
+                _currentSettings.ThemeIndex = themeComboBox.SelectedIndex;
                 SaveSettings();
             };
         }
+    }
+    
+    private void SetupDeveloperModeControls()
+    {
+        // Configuration de la CheckBox du mode développeur
+        var devModeCheckBox = this.FindControl<CheckBox>("DevModeCheckBox");
+        var devModeOptionsPanel = this.FindControl<StackPanel>("DevModeOptionsPanel");
         
-        // Configurer la visibilité du panel de mode développeur
         if (devModeCheckBox != null && devModeOptionsPanel != null)
         {
+            devModeCheckBox.IsChecked = _currentSettings.DeveloperMode;
+            devModeOptionsPanel.IsVisible = _currentSettings.DeveloperMode;
+            
             devModeCheckBox.IsCheckedChanged += (s, args) =>
             {
-                devModeOptionsPanel.IsVisible = devModeCheckBox.IsChecked ?? false;
-                _currentSettings.DeveloperMode = devModeCheckBox.IsChecked ?? false;
+                bool isChecked = devModeCheckBox.IsChecked ?? false;
+                devModeOptionsPanel.IsVisible = isChecked;
+                _currentSettings.DeveloperMode = isChecked;
                 SaveSettings();
             };
         }
-
-        // Configurer les autres CheckBox
+    }
+    
+    private void SetupCheckboxControls()
+    {
+        // CheckBox pour fermer après le lancement
         var closeAfterLaunchCheckBox = this.FindControl<CheckBox>("CloseAfterLaunchCheckBox");
         if (closeAfterLaunchCheckBox != null)
         {
-            // Appliquer la valeur sauvegardée
             closeAfterLaunchCheckBox.IsChecked = _currentSettings.CloseAfterLaunch;
-            
-            // Configurer l'événement
             closeAfterLaunchCheckBox.IsCheckedChanged += (s, args) =>
             {
                 _currentSettings.CloseAfterLaunch = closeAfterLaunchCheckBox.IsChecked ?? false;
@@ -202,233 +172,44 @@ public partial class SettingsWindow : Window
             };
         }
         
+        // CheckBox pour afficher la sortie de débogage
         var showDebugOutputCheckBox = this.FindControl<CheckBox>("ShowDebugOutputCheckBox");
         if (showDebugOutputCheckBox != null)
         {
-            // Appliquer la valeur sauvegardée
             showDebugOutputCheckBox.IsChecked = _currentSettings.ShowDebugOutput;
-            
-            // Configurer l'événement
             showDebugOutputCheckBox.IsCheckedChanged += (s, args) =>
             {
                 _currentSettings.ShowDebugOutput = showDebugOutputCheckBox.IsChecked ?? false;
                 SaveSettings();
             };
         }
+    }
+    
+    private void UpdateSystemInfo()
+    {
+        // Mise à jour des informations sur la mémoire disponible
+        var availableMemoryText = this.FindControl<TextBlock>("AvailableMemoryText");
+        var memoryProgressBar = this.FindControl<ProgressBar>("MemoryProgressBar");
         
-        // Configurer la ComboBox du thème
-        if (themeComboBox != null)
-        {
-            // Appliquer la valeur sauvegardée
-            themeComboBox.SelectedIndex = _currentSettings.ThemeIndex;
-            
-            // Configurer l'événement
-            themeComboBox.SelectionChanged += (s, args) =>
-            {
-                _currentSettings.ThemeIndex = themeComboBox.SelectedIndex;
-                SaveSettings();
-            };
-        }
-
-        // Configurer la détection automatique de Java
-        var autoDetectButton = this.FindControl<Button>("AutoDetectButton");
-        if (autoDetectButton != null)
-        {
-            autoDetectButton.Click += AutoDetectJava;
-        }
-        
-        // Configurer le bouton parcourir pour Java
-        var browseButton = this.FindControl<Button>("BrowseButton");
-        if (browseButton != null)
-        {
-            browseButton.Click += SelectJavaPath;
-        }
-    }
-    
-    // Gestionnaire pour le slider de mémoire
-    private void OnMemorySliderChanged(object? sender, Avalonia.Controls.Primitives.RangeBaseValueChangedEventArgs e)
-    {
-        if (sender is Slider slider)
-        {
-            UpdateMemoryText(slider.Value);
-            SaveMemoryValue(slider.Value);
-        }
-    }
-    
-    private void UpdateMemoryText(double value)
-    {
-        if (memoryValueText != null)
-        {
-            int memoryValue = (int)Math.Round(value);
-            memoryValueText.Text = $"{memoryValue} Go";
-        }
-    }
-    
-    private void UpdateAvailableMemoryInfo()
-    {
-        if (availableMemoryText != null)
+        if (availableMemoryText != null && memoryProgressBar != null)
         {
             try
             {
                 long totalMemoryMB = GC.GetGCMemoryInfo().TotalAvailableMemoryBytes / 1024 / 1024;
                 long totalMemoryGB = totalMemoryMB / 1024;
-                availableMemoryText.Text = $"Mémoire système disponible : {totalMemoryGB} Go";
-            }
-            catch
-            {
-                availableMemoryText.Text = "Mémoire système disponible : Information non disponible";
-            }
-        }
-    }
-
-    // Gestion du mode développeur
-    private void OnDevModeChanged(object? sender, RoutedEventArgs e)
-    {
-        if (devModeCheckBox != null && devModeOptionsPanel != null)
-        {
-            bool isChecked = devModeCheckBox.IsChecked ?? false;
-            devModeOptionsPanel.IsVisible = isChecked;
-            
-            SaveDevModeEnabled(isChecked);
-
-            if (isChecked)
-            {
-                ShowNotification("Mode développeur activé");
-            }
-            else
-            {
-                ShowNotification("Mode développeur désactivé");
-            }
-        }
-    }
-    
-    // Sélection du chemin Java
-    private async void SelectJavaPath(object? sender, RoutedEventArgs e)
-    {
-        var dialog = new OpenFileDialog
-        {
-            Title = "Sélectionner l'exécutable Java",
-            AllowMultiple = false
-        };
-        
-        // Définir les filtres en fonction du système d'exploitation
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-        {
-            dialog.Filters.Add(new FileDialogFilter { Name = "Exécutable Java", Extensions = { "exe" } });
-        }
-        else
-        {
-            // Aucun filtre spécifique pour Linux/macOS
-        }
-
-        var result = await dialog.ShowAsync(this);
-        
-        if (result != null && result.Length > 0)
-        {
-            string path = result[0];
-            if (javaPathTextBox != null)
-            {
-                javaPathTextBox.Text = path;
-                _currentSettings.JavaPath = path;
-                SaveSettings();
-                ShowNotification("Chemin Java mis à jour");
-            }
-        }
-    }
-    
-    // Détection automatique de Java
-    private void AutoDetectJava(object? sender, RoutedEventArgs e)
-    {
-        string? javaPath = FindJavaPath();
-        
-        if (javaPath != null && javaPathTextBox != null)
-        {
-            javaPathTextBox.Text = javaPath;
-            _currentSettings.JavaPath = javaPath;
-            SaveSettings();
-            ShowNotification("Java détecté automatiquement");
-        }
-        else
-        {
-            ShowNotification("Impossible de détecter Java automatiquement", isError: true);
-        }
-    }
-    
-    private string? FindJavaPath()
-    {
-        // Tenter de localiser Java à partir des variables d'environnement
-        string? javaHome = Environment.GetEnvironmentVariable("JAVA_HOME");
-        
-        if (!string.IsNullOrEmpty(javaHome))
-        {
-            string javaBin = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
-                ? Path.Combine(javaHome, "bin", "java.exe")
-                : Path.Combine(javaHome, "bin", "java");
+                availableMemoryText.Text = $"{totalMemoryGB} Go disponibles";
                 
-            if (File.Exists(javaBin))
-                return javaBin;
-        }
-        
-        // Vérifier dans les chemins communs (simplifié)
-        string[] commonPaths = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
-            ? new[] { @"C:\Program Files\Java", @"C:\Program Files (x86)\Java" }
-            : new[] { "/usr/bin/java", "/usr/local/bin/java" };
-            
-        foreach (var path in commonPaths)
-        {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                if (Directory.Exists(path))
-                {
-                    // Parcourir les sous-répertoires pour trouver Java
-                    foreach (var dir in Directory.GetDirectories(path))
-                    {
-                        string javaBin = Path.Combine(dir, "bin", "java.exe");
-                        if (File.Exists(javaBin))
-                            return javaBin;
-                    }
-                }
+                // Mettre à jour la valeur maximale de la barre de progression
+                memoryProgressBar.Maximum = totalMemoryGB;
             }
-            else if (File.Exists(path))
+            catch (Exception ex)
             {
-                return path;
+                Debug.WriteLine($"Erreur lors de la récupération de la mémoire: {ex.Message}");
+                availableMemoryText.Text = "-- Go disponibles";
             }
         }
-        
-        return null;
     }
     
-    // Gestion du thème
-    private void OnThemeChanged(object? sender, SelectionChangedEventArgs e)
-    {
-        if (themeComboBox != null)
-        {
-            SaveThemeIndex(themeComboBox.SelectedIndex);
-            ApplyTheme(themeComboBox.SelectedIndex);
-            
-            // Notification pour le changement de thème
-            ShowNotification("Thème appliqué");
-        }
-    }
-    
-    private void ApplyTheme(int themeIndex)
-    {
-        // Appliquer le thème sélectionné
-        // Dans une vraie application, ce code serait plus élaboré
-        // et affecterait l'application dans son ensemble
-        
-        string themeName = themeIndex switch
-        {
-            0 => "Sombre",
-            1 => "Clair",
-            2 => "Système",
-            _ => "Sombre"
-        };
-        
-        Debug.WriteLine($"Thème appliqué : {themeName}");
-    }
-    
-    // Liens et boutons dans l'onglet À propos
     private void OnLuckyLinkClicked(object? sender, RoutedEventArgs e)
     {
         try
@@ -439,104 +220,185 @@ public partial class SettingsWindow : Window
         }
         catch (Exception ex)
         {
-            // Gérer silencieusement l'erreur
             Debug.WriteLine($"Impossible d'ouvrir l'URL: {ex.Message}");
         }
     }
     
-    private void OpenGitHub(object? sender, RoutedEventArgs e)
+    private void SelectJavaPath(object? sender, RoutedEventArgs e)
     {
-        var url = "https://github.com/YoannDumont/MCLauncher";
+        SelectJavaPathAsync();
+    }
+    
+    private async void SelectJavaPathAsync()
+    {
         try
         {
-            var psi = new ProcessStartInfo(url) { UseShellExecute = true };
-            Process.Start(psi);
-        }
-        catch
-        {
-            ShowNotification("Impossible d'ouvrir le lien GitHub", isError: true);
-        }
-    }
-    
-    private async void CheckForUpdates(object? sender, RoutedEventArgs e)
-    {
-        ShowNotification("Recherche de mises à jour...");
-        
-        // Simuler une vérification des mises à jour
-        await Task.Delay(2000);
-        
-        // Dans un cas réel, on vérifierait vraiment les mises à jour
-        // Ici on simule juste une réponse
-        ShowNotification("Votre application est à jour");
-    }
-    
-    // Système de notification
-    private void ShowNotification(string message, bool isError = false)
-    {
-        if (notificationBorder != null && notificationBorder.Child is TextBlock textBlock)
-        {
-            // Configurer le message
-            textBlock.Text = message;
-            
-            // Configurer la couleur en fonction du type de message
-            notificationBorder.Background = new SolidColorBrush(
-                isError ? Color.Parse("#E53935") : Color.Parse("#333333"));
-                
-            // Afficher avec animation
-            notificationBorder.IsVisible = true;
-            notificationBorder.Opacity = 0;
-            notificationBorder.Opacity = 1;
-            
-            // Planifier la disparition
-            var timer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromSeconds(3)
-            };
-            
-            timer.Tick += (s, e) =>
-            {
-                notificationBorder.Opacity = 0;
-                timer.Stop();
-                
-                // Timer pour cacher complètement après la fin de l'animation
-                var hideTimer = new DispatcherTimer
-                {
-                    Interval = TimeSpan.FromSeconds(0.3)
-                };
-                
-                hideTimer.Tick += (s2, e2) =>
-                {
-                    notificationBorder.IsVisible = false;
-                    hideTimer.Stop();
-                };
-                
-                hideTimer.Start();
-            };
-            
-            timer.Start();
-        }
-    }
-    
-    // Méthodes de persistance (simulées ici)
-    private double GetSavedMemoryValue() => 4.0; // Simulé
-    private void SaveMemoryValue(double value) => Debug.WriteLine($"Sauvegarde de la mémoire : {value}");
-    
-    private string GetSavedJavaPath() => ""; // Simulé
-    private void SaveJavaPath(string path) => Debug.WriteLine($"Sauvegarde du chemin Java : {path}");
-    
-    private bool GetDevModeEnabled() => false; // Simulé
-    private void SaveDevModeEnabled(bool enabled) => Debug.WriteLine($"Sauvegarde du mode développeur : {enabled}");
-    
-    private int GetSavedThemeIndex() => 0; // Simulé
-    private void SaveThemeIndex(int index) => Debug.WriteLine($"Sauvegarde de l'index du thème : {index}");
+            var javaFileType = new FilePickerFileType("Exécutable Java") { Patterns = new[] { "*.exe" } };
+            var allFileType = new FilePickerFileType("Tous les fichiers") { Patterns = new[] { "*" } };
 
+            var files = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+            {
+                Title = "Sélectionner l'exécutable Java",
+                AllowMultiple = false,
+                FileTypeFilter = new[] { javaFileType, allFileType }
+            });
+
+            if (files != null && files.Count > 0)
+            {
+                string path = files[0].Path.LocalPath;
+                var javaPathTextBox = this.FindControl<TextBox>("JavaPathTextBox");
+                if (javaPathTextBox != null)
+                {
+                    javaPathTextBox.Text = path;
+                    _currentSettings.JavaPath = path;
+                    SaveSettings();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error selecting Java path: {ex.Message}");
+        }
+    }
+    
+    private void AutoDetectJava(object? sender, RoutedEventArgs e)
+    {
+        string? javaPath = FindJavaPath();
+        
+        var javaPathTextBox = this.FindControl<TextBox>("JavaPathTextBox");
+        if (javaPath != null && javaPathTextBox != null)
+        {
+            javaPathTextBox.Text = javaPath;
+            _currentSettings.JavaPath = javaPath;
+            SaveSettings();
+        }
+        else
+        {
+            Debug.WriteLine("Java non détecté automatiquement");
+        }
+    }
+    
+    private string? FindJavaPath()
+    {
+        try
+        {
+            // Tenter de localiser Java à partir des variables d'environnement
+            string? javaHome = Environment.GetEnvironmentVariable("JAVA_HOME");
+            
+            if (!string.IsNullOrEmpty(javaHome))
+            {
+                string javaBin = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+                    ? Path.Combine(javaHome, "bin", "java.exe")
+                    : Path.Combine(javaHome, "bin", "java");
+                    
+                if (File.Exists(javaBin))
+                    return javaBin;
+            }
+            
+            // Vérifier si java est dans le PATH
+            try
+            {
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    var process = new Process
+                    {
+                        StartInfo = new ProcessStartInfo
+                        {
+                            FileName = "where",
+                            Arguments = "java",
+                            RedirectStandardOutput = true,
+                            UseShellExecute = false,
+                            CreateNoWindow = true
+                        }
+                    };
+                    
+                    process.Start();
+                    string output = process.StandardOutput.ReadToEnd();
+                    process.WaitForExit();
+                    
+                    if (!string.IsNullOrEmpty(output))
+                    {
+                        string[] paths = output.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                        if (paths.Length > 0 && File.Exists(paths[0]))
+                            return paths[0];
+                    }
+                }
+                else
+                {
+                    var process = new Process
+                    {
+                        StartInfo = new ProcessStartInfo
+                        {
+                            FileName = "which",
+                            Arguments = "java",
+                            RedirectStandardOutput = true,
+                            UseShellExecute = false,
+                            CreateNoWindow = true
+                        }
+                    };
+                    
+                    process.Start();
+                    string output = process.StandardOutput.ReadToEnd().Trim();
+                    process.WaitForExit();
+                    
+                    if (!string.IsNullOrEmpty(output) && File.Exists(output))
+                        return output;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Erreur lors de la recherche de Java dans le PATH: {ex.Message}");
+            }
+            
+            // Vérifier dans les chemins communs
+            string[] commonPaths = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+                ? new[] { 
+                    @"C:\Program Files\Java", 
+                    @"C:\Program Files (x86)\Java",
+                    @"C:\Program Files\Eclipse Adoptium"
+                  }
+                : new[] { 
+                    "/usr/bin/java", 
+                    "/usr/local/bin/java",
+                    "/opt/jdk/bin/java"
+                  };
+                
+            foreach (var path in commonPaths)
+            {
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    if (Directory.Exists(path))
+                    {
+                        // Parcourir les sous-répertoires pour trouver Java
+                        foreach (var dir in Directory.GetDirectories(path))
+                        {
+                            string javaBin = Path.Combine(dir, "bin", "java.exe");
+                            if (File.Exists(javaBin))
+                                return javaBin;
+                        }
+                    }
+                }
+                else if (File.Exists(path))
+                {
+                    return path;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Erreur lors de la recherche de Java: {ex}");
+        }
+        
+        return null;
+    }
+    
     // Chargement des paramètres depuis le fichier
-    private Settings LoadSettings()
+    private AppSettings LoadSettings()
     {
         try
         {
             // Créer le répertoire s'il n'existe pas
-            string directory = Path.GetDirectoryName(_settingsFilePath);
+            string directory = Path.GetDirectoryName(_settingsFilePath) ?? string.Empty;
             if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
             {
                 Directory.CreateDirectory(directory);
@@ -546,7 +408,11 @@ public partial class SettingsWindow : Window
             if (File.Exists(_settingsFilePath))
             {
                 string json = File.ReadAllText(_settingsFilePath);
-                return JsonSerializer.Deserialize<Settings>(json) ?? new Settings();
+                var settings = JsonSerializer.Deserialize<AppSettings>(json);
+                if (settings != null)
+                {
+                    return settings;
+                }
             }
         }
         catch (Exception ex)
@@ -555,12 +421,7 @@ public partial class SettingsWindow : Window
         }
         
         // Retourner les paramètres par défaut si le fichier n'existe pas ou en cas d'erreur
-        return new Settings();
-    }
-    
-    private async void ShowErrorDialog(string title, string message)
-    {
-        await MessageBoxManager.ShowErrorAsync(this, title, message);
+        return new AppSettings();
     }
     
     // Sauvegarde des paramètres dans le fichier
@@ -569,7 +430,7 @@ public partial class SettingsWindow : Window
         try
         {
             // Créer le répertoire s'il n'existe pas
-            string directory = Path.GetDirectoryName(_settingsFilePath);
+            string directory = Path.GetDirectoryName(_settingsFilePath) ?? string.Empty;
             if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
             {
                 Directory.CreateDirectory(directory);
@@ -588,10 +449,83 @@ public partial class SettingsWindow : Window
             Debug.WriteLine($"Erreur lors de la sauvegarde des paramètres: {ex.Message}");
         }
     }
+
+    private async void BrowseButton_Click(object? sender, RoutedEventArgs e)
+    {
+        try
+        {
+            // Use StorageProvider API instead of OpenFileDialog
+            var javaExeExtensions = new List<string> { "java.exe", "javaw.exe" };
+            var allFilesExtensions = new List<string> { "*" };
+            
+            var javaFileType = new FilePickerFileType("Exécutable Java") { Patterns = javaExeExtensions };
+            var allFileType = new FilePickerFileType("Tous les fichiers") { Patterns = allFilesExtensions };
+            
+            var files = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions {
+                Title = "Sélectionner Java",
+                AllowMultiple = false,
+                FileTypeFilter = new[] { javaFileType, allFileType }
+            });
+            
+            if (files != null && files.Count > 0)
+            {
+                var javaPath = files[0].Path.LocalPath;
+                _currentSettings.JavaPath = javaPath;
+                SaveSettings();
+                
+                // Update the Java path TextBox
+                var javaPathTextBox = this.FindControl<TextBox>("JavaPathTextBox");
+                if (javaPathTextBox != null)
+                {
+                    javaPathTextBox.Text = javaPath;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error selecting Java path: {ex.Message}");
+        }
+    }
+
+    private void UpdateAvailableJavaVersions()
+    {
+        var javaVersionsComboBox = this.FindControl<ComboBox>("JavaVersionsComboBox");
+        if (javaVersionsComboBox != null)
+        {
+            // Create a list of Java versions
+            var versions = new List<string> { "Java 8", "Java 11", "Java 17", "Java 21" };
+            
+            // Use ItemsSource instead of Items
+            javaVersionsComboBox.ItemsSource = versions;
+            
+            string? selectedVersion = _currentSettings.SelectedJavaVersion;
+            if (selectedVersion != null && versions.Contains(selectedVersion))
+            {
+                javaVersionsComboBox.SelectedItem = selectedVersion;
+            }
+        }
+    }
+
+    private void SaveProfileSettings()
+    {
+        var profileNameTextBox = this.FindControl<TextBox>("ProfileNameTextBox");
+        var usernameTextBox = this.FindControl<TextBox>("UsernameTextBox");
+        
+        if (profileNameTextBox != null && usernameTextBox != null)
+        {
+            // Fix nullable warnings by using null coalescing operators
+            string profileName = profileNameTextBox.Text ?? string.Empty;
+            string username = usernameTextBox.Text ?? string.Empty;
+            
+            _currentSettings.ProfileName = profileName;
+            _currentSettings.Username = username;
+            SaveSettings();
+        }
+    }
 }
 
-// Classe pour stocker les paramètres
-public class Settings
+// Classe pour stocker les paramètres - renommée pour éviter les conflits
+public class AppSettings
 {
     // Paramètres généraux
     public string JavaPath { get; set; } = "";
@@ -602,4 +536,9 @@ public class Settings
     public bool CloseAfterLaunch { get; set; } = false;
     public bool ShowDebugOutput { get; set; } = false;
     public bool DeveloperMode { get; set; } = false;
+
+    // Nouvelles propriétés
+    public string? SelectedJavaVersion { get; set; }
+    public string ProfileName { get; set; } = "";
+    public string Username { get; set; } = "";
 }

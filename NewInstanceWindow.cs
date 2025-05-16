@@ -27,20 +27,31 @@ public partial class NewInstanceWindow : Window
         DataContext = this;
         _launcher = new MinecraftLauncher();
 
-        OfficialCheckBox.Checked += (s, e) => FilterVersions();
-        OfficialCheckBox.Unchecked += (s, e) => FilterVersions();
-        SnapshotCheckBox.Checked += (s, e) => FilterVersions();
-        SnapshotCheckBox.Unchecked += (s, e) => FilterVersions();
-        OldCheckBox.Checked += (s, e) => FilterVersions();
-        OldCheckBox.Unchecked += (s, e) => FilterVersions();
+        // Replace deprecated Checked/Unchecked events with IsCheckedChanged
+        OfficialCheckBox.IsCheckedChanged += (s, e) => FilterVersions();
+        SnapshotCheckBox.IsCheckedChanged += (s, e) => FilterVersions();
+        OldCheckBox.IsCheckedChanged += (s, e) => FilterVersions();
         SearchBox.KeyUp += (s, e) => FilterVersions();
 
-        NoLoaderRadio.Checked += (s, e) => SetLoader("Vanilla");
-        NeoForgeRadio.Checked += (s, e) => SetLoader("NeoForge");
-        ForgeRadio.Checked += (s, e) => SetLoader("Forge");
-        FabricRadio.Checked += (s, e) => SetLoader("Fabric");
-        QuiltRadio.Checked += (s, e) => SetLoader("Quilt");
-        LiteLoaderRadio.Checked += (s, e) => SetLoader("LiteLoader");
+        // Replace deprecated Checked events with IsCheckedChanged
+        NoLoaderRadio.IsCheckedChanged += (s, e) => {
+            if (NoLoaderRadio.IsChecked == true) SetLoader("Vanilla");
+        };
+        NeoForgeRadio.IsCheckedChanged += (s, e) => {
+            if (NeoForgeRadio.IsChecked == true) SetLoader("NeoForge");
+        };
+        ForgeRadio.IsCheckedChanged += (s, e) => {
+            if (ForgeRadio.IsChecked == true) SetLoader("Forge");
+        };
+        FabricRadio.IsCheckedChanged += (s, e) => {
+            if (FabricRadio.IsChecked == true) SetLoader("Fabric");
+        };
+        QuiltRadio.IsCheckedChanged += (s, e) => {
+            if (QuiltRadio.IsChecked == true) SetLoader("Quilt");
+        };
+        LiteLoaderRadio.IsCheckedChanged += (s, e) => {
+            if (LiteLoaderRadio.IsChecked == true) SetLoader("LiteLoader");
+        };
 
         OkButton.Click += OkButton_Click;
         CancelButton.Click += (s, e) => Close();
