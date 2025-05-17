@@ -1,13 +1,15 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="MCLauncher.MainWindow"
+        xmlns:local="using:MCLauncher"
         Title="MCLauncher"
         Icon="avares://MCLauncher/ressources/sources/logo.ico"
         MinWidth="1000" MinHeight="650"
         WindowState="Maximized"
         TransparencyLevelHint="AcrylicBlur"
         Background="DimGray"
-        ExtendClientAreaToDecorationsHint="True">
+        ExtendClientAreaToDecorationsHint="True"
+        x:DataType="local:MainWindow">
 
     <Window.Styles>
         <StyleInclude Source="avares://MCLauncher/Styles/AnimatedStyles.axaml"/>
@@ -210,9 +212,9 @@
                     <Border Grid.Row="1" 
                             Classes="PanelContent">
                         <ScrollViewer>
-                            <ItemsRepeater x:Name="InstancesRepeater">
+                            <ItemsRepeater x:Name="InstancesRepeater" ItemsSource="{Binding Instances}">
                                 <ItemsRepeater.ItemTemplate>
-                                    <DataTemplate>
+                                    <DataTemplate x:DataType="local:MinecraftInstance">
                                         <Border Classes="InstanceItem"
                                                 Background="#33384463" 
                                                 CornerRadius="12" 
@@ -234,11 +236,11 @@
                                                     <StackPanel Orientation="Vertical" 
                                                                 Width="200" 
                                                                 VerticalAlignment="Center">
-                                                        <TextBlock Text="Mon Instance" 
+                                                        <TextBlock Text="{Binding Name}" 
                                                                    FontWeight="Bold" 
                                                                    FontSize="18" 
                                                                    Foreground="White"/>
-                                                        <TextBlock Text="1.20.4 • Vanilla" 
+                                                        <TextBlock Text="{Binding VersionInfo}" 
                                                                    FontSize="14" 
                                                                    Foreground="#FFB0B0B0" 
                                                                    Margin="0,4,0,0"/>
@@ -260,7 +262,7 @@
                                                             CornerRadius="10" 
                                                             Padding="20,10"
                                                             FontWeight="SemiBold"
-                                                            Click="Launch"/>
+                                                            CommandParameter="{Binding}"/>
                                                             
                                                     <StackPanel x:Name="EditButtons" 
                                                                 Orientation="Horizontal" 
@@ -272,7 +274,7 @@
                                                                 CornerRadius="10" 
                                                                 Padding="20,10"
                                                                 FontWeight="SemiBold"
-                                                                Click="Edit"/>
+                                                                />
                                                                 
                                                         <Button Content="Delete" 
                                                                 Background="#E05263" 
@@ -280,7 +282,7 @@
                                                                 CornerRadius="10" 
                                                                 Padding="20,10"
                                                                 FontWeight="SemiBold"
-                                                                Click="Delete"/>
+                                                                />
                                                     </StackPanel>
                                                 </StackPanel>
                                             </Grid>
