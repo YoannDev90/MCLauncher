@@ -13,11 +13,11 @@ namespace MCLauncher;
 
 public partial class SettingsWindow : Window
 {
-    // Chemin du fichier de configuration
-    private readonly string _settingsFilePath;
-
     // Configuration actuelle
     private readonly AppSettings _currentSettings;
+
+    // Chemin du fichier de configuration
+    private readonly string _settingsFilePath;
 
     public SettingsWindow()
     {
@@ -214,6 +214,8 @@ public partial class SettingsWindow : Window
         try
         {
             var url = "https://github.com/YoannDev90/MCLauncher";
+        }
+    }
 
     private void OnYoannLinkClicked(object? sender, RoutedEventArgs e)
     {
@@ -324,7 +326,7 @@ public partial class SettingsWindow : Window
 
                     if (!string.IsNullOrEmpty(output))
                     {
-                        string[] paths = output.Split(new[] { Environment.NewLine },
+                        var paths = output.Split(new[] { Environment.NewLine },
                             StringSplitOptions.RemoveEmptyEntries);
                         if (paths.Length > 0 && File.Exists(paths[0]))
                             return paths[0];
@@ -358,7 +360,7 @@ public partial class SettingsWindow : Window
             }
 
             // Vérifier dans les chemins communs
-            string[] commonPaths = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+            var commonPaths = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
                 ? new[]
                 {
                     @"C:\Program Files\Java",
