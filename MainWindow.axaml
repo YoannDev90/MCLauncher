@@ -12,47 +12,47 @@
         x:DataType="local:MainWindow">
 
     <Window.Styles>
-        <StyleInclude Source="avares://MCLauncher/Styles/AnimatedStyles.axaml"/>
-        
+        <StyleInclude Source="avares://MCLauncher/Styles/AnimatedStyles.axaml" />
+
         <Style Selector="Button.ActionButton">
-            <Setter Property="Background" Value="#7F17181C"/>
-            <Setter Property="Opacity" Value="0.9"/>
-            <Setter Property="CornerRadius" Value="10"/>
-            <Setter Property="Height" Value="42"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Padding" Value="16,0"/>
-            <Setter Property="Margin" Value="8,0"/>
-            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#7F17181C" />
+            <Setter Property="Opacity" Value="0.9" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="Height" Value="42" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Padding" Value="16,0" />
+            <Setter Property="Margin" Value="8,0" />
+            <Setter Property="BorderThickness" Value="0" />
         </Style>
-        
+
         <Style Selector="Button.ActionButton:pointerover">
-            <Setter Property="Background" Value="#BB17181C"/>
+            <Setter Property="Background" Value="#BB17181C" />
         </Style>
-        
+
         <Style Selector="Border.PanelHeader">
-            <Setter Property="Background" Value="#7F17181C"/>
-            <Setter Property="CornerRadius" Value="12,12,0,0"/>
-            <Setter Property="Padding" Value="20,14"/>
+            <Setter Property="Background" Value="#7F17181C" />
+            <Setter Property="CornerRadius" Value="12,12,0,0" />
+            <Setter Property="Padding" Value="20,14" />
         </Style>
-        
+
         <Style Selector="Border.PanelContent">
-            <Setter Property="Background" Value="#66000000"/>
-            <Setter Property="CornerRadius" Value="0,0,12,12"/>
-            <Setter Property="Padding" Value="15"/>
+            <Setter Property="Background" Value="#2a2a2c" />
+            <Setter Property="CornerRadius" Value="0,0,12,12" />
+            <Setter Property="Padding" Value="15" />
         </Style>
-        
+
         <Style Selector="TextBlock.Title">
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="FontSize" Value="22"/>
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontSize" Value="22" />
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="Foreground" Value="White" />
         </Style>
-        
+
         <Style Selector="TextBlock.Subtitle">
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="Margin" Value="5,2"/>
-            <Setter Property="Foreground" Value="#FFE0E0E0"/>
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Margin" Value="5,2" />
+            <Setter Property="Foreground" Value="#FFE0E0E0" />
         </Style>
     </Window.Styles>
 
@@ -64,9 +64,9 @@
         </Grid.RowDefinitions>
 
         <!-- Bannière du haut (titre + boutons) -->
-        <Border Classes="GlassPanel" 
-                Height="70" 
-                Padding="10" 
+        <Border Classes="GlassPanel"
+                Height="70"
+                Padding="10"
                 Margin="0,0,0,10"
                 Grid.Row="0">
             <Grid>
@@ -77,8 +77,8 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- Boutons de gauche -->
-                <StackPanel Grid.Column="0" 
-                            Orientation="Horizontal" 
+                <StackPanel Grid.Column="0"
+                            Orientation="Horizontal"
                             VerticalAlignment="Center"
                             Spacing="8">
                     <!-- New instance -->
@@ -101,29 +101,29 @@
                 </StackPanel>
 
                 <!-- Logo + App Name -->
-                <StackPanel Grid.Column="1" 
-                            Orientation="Horizontal" 
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
                             VerticalAlignment="Center"
-                            HorizontalAlignment="Center" 
+                            HorizontalAlignment="Center"
                             Spacing="12">
                     <Image Source="avares://MCLauncher/ressources/sources/logo.png" Width="40" Height="40">
                         <Image.Transitions>
                             <Transitions>
-                                <DoubleTransition Property="Width" Duration="0:0:0.8" Easing="BounceEaseOut"/>
-                                <DoubleTransition Property="Height" Duration="0:0:0.8" Easing="BounceEaseOut"/>
+                                <DoubleTransition Property="Width" Duration="0:0:0.8" Easing="BounceEaseOut" />
+                                <DoubleTransition Property="Height" Duration="0:0:0.8" Easing="BounceEaseOut" />
                             </Transitions>
                         </Image.Transitions>
                     </Image>
-                    <TextBlock Text="MCLauncher" 
-                               FontSize="32" 
+                    <TextBlock Text="MCLauncher"
+                               FontSize="32"
                                FontWeight="Bold"
-                               Foreground="White" 
+                               Foreground="White"
                                VerticalAlignment="Center" />
                 </StackPanel>
 
                 <!-- Boutons de droite -->
-                <StackPanel Grid.Column="2" 
-                            Orientation="Horizontal" 
+                <StackPanel Grid.Column="2"
+                            Orientation="Horizontal"
                             VerticalAlignment="Center"
                             Spacing="8">
                     <!-- Settings -->
@@ -150,16 +150,16 @@
         <!-- Contenu principal - Instances -->
         <Grid Grid.Row="1">
             <!-- Panel des instances -->
-            <Border Classes="GlassPanel" 
+            <Border Classes="GlassPanel"
                     Margin="0,0,0,10">
                 <Grid RowDefinitions="Auto,*">
-                    <Border Grid.Row="0" 
+                    <Border Grid.Row="0"
                             Classes="PanelHeader">
                         <Grid ColumnDefinitions="*,Auto">
                             <TextBlock Grid.Column="0"
                                        Text="Instances"
-                                       Classes="Title"/>
-                            
+                                       Classes="Title" />
+
                             <!-- Bouton mode édition -->
                             <Button Grid.Column="1"
                                     x:Name="EditModeButton"
@@ -168,87 +168,107 @@
                                     Padding="12,0"
                                     Click="ToggleEditMode">
                                 <StackPanel Orientation="Horizontal" Spacing="8">
-                                    <Image Source="avares://MCLauncher/ressources/icons/square-pen.png" Height="20"/>
-                                    <TextBlock Text="Edit Mode" VerticalAlignment="Center"/>
+                                    <Image Source="avares://MCLauncher/ressources/icons/pen.png" Height="20" />
+                                    <TextBlock Text="Edit Mode" VerticalAlignment="Center" />
                                 </StackPanel>
                             </Button>
                         </Grid>
                     </Border>
-                    
-                    <Border Grid.Row="1" 
+
+                    <Border Grid.Row="1"
                             Classes="PanelContent">
                         <ScrollViewer>
                             <ItemsRepeater x:Name="InstancesRepeater" ItemsSource="{Binding Instances}">
                                 <ItemsRepeater.ItemTemplate>
                                     <DataTemplate x:DataType="local:MinecraftInstance">
                                         <Border Classes="InstanceItem"
-                                                Background="#33384463" 
-                                                CornerRadius="12" 
-                                                Padding="18" 
+                                                Background="#33384463"
+                                                CornerRadius="12"
+                                                Padding="18"
                                                 Margin="0,8">
                                             <Grid ColumnDefinitions="Auto,*,Auto">
                                                 <!-- Icon + Instance info -->
-                                                <StackPanel Grid.Column="0" 
-                                                            Orientation="Horizontal" 
-                                                            Spacing="18" 
+                                                <StackPanel Grid.Column="0"
+                                                            Orientation="Horizontal"
+                                                            Spacing="18"
                                                             VerticalAlignment="Center">
-                                                    <Border Background="#4A5F7F91" 
-                                                            CornerRadius="8" 
+                                                    <Border Background="#4A5F7F91"
+                                                            CornerRadius="8"
                                                             Padding="8">
-                                                        <Image Source="avares://MCLauncher/ressources/sources/logo.png" 
-                                                               Width="48" 
-                                                               Height="48"/>
+                                                        <Image Source="avares://MCLauncher/ressources/sources/logo.png"
+                                                               Width="48"
+                                                               Height="48" />
                                                     </Border>
-                                                    <StackPanel Orientation="Vertical" 
-                                                                Width="200" 
+                                                    <StackPanel Orientation="Vertical"
+                                                                Width="200"
                                                                 VerticalAlignment="Center">
-                                                        <TextBlock Text="{Binding Name}" 
-                                                                   FontWeight="Bold" 
-                                                                   FontSize="18" 
-                                                                   Foreground="White"/>
-                                                        <TextBlock Text="{Binding VersionInfo}" 
-                                                                   FontSize="14" 
-                                                                   Foreground="#FFB0B0B0" 
-                                                                   Margin="0,4,0,0"/>
+                                                        <TextBlock Text="{Binding Name}"
+                                                                   FontWeight="Bold"
+                                                                   FontSize="18"
+                                                                   Foreground="White" />
+                                                        <TextBlock Text="{Binding VersionInfo}"
+                                                                   FontSize="14"
+                                                                   Foreground="#FFB0B0B0"
+                                                                   Margin="0,4,0,0" />
                                                     </StackPanel>
                                                 </StackPanel>
 
                                                 <!-- Spacer -->
-                                                <Grid Grid.Column="1"/>
+                                                <Grid Grid.Column="1" />
 
                                                 <!-- Buttons -->
-                                                <StackPanel Grid.Column="2" 
-                                                            Orientation="Horizontal" 
+                                                <StackPanel Grid.Column="2"
+                                                            Orientation="Horizontal"
                                                             HorizontalAlignment="Right"
-                                                            VerticalAlignment="Center" 
+                                                            VerticalAlignment="Center"
                                                             Spacing="10">
-                                                    <Button Content="Launch" 
-                                                            Background="#3081DC" 
-                                                            Foreground="White" 
-                                                            CornerRadius="10" 
+                                                    <Button Background="#3081DC"
+                                                            Foreground="White"
+                                                            CornerRadius="10"
                                                             Padding="20,10"
                                                             FontWeight="SemiBold"
-                                                            Click="Launch_Click"/>
-                                                            
-                                                    <StackPanel x:Name="EditButtons" 
-                                                                Orientation="Horizontal" 
+                                                            Click="Launch_Click">
+                                                        <StackPanel Orientation="Horizontal" Spacing="8">
+                                                            <Image
+                                                                Source="avares://MCLauncher/ressources/icons/play.png"
+                                                                Height="20" />
+                                                            <TextBlock Text="Play" VerticalAlignment="Center" />
+                                                        </StackPanel>
+                                                    </Button>
+
+                                                    <StackPanel x:Name="EditButtons"
+                                                                Orientation="Horizontal"
                                                                 Spacing="10"
                                                                 IsVisible="{Binding #EditModeEnabled.IsChecked}">
-                                                        <Button Content="Edit" 
-                                                                Background="#5068B0" 
-                                                                Foreground="White" 
-                                                                CornerRadius="10" 
-                                                                Padding="20,10"
-                                                                FontWeight="SemiBold"
-                                                                Click="Edit_Click"/>
-                                                                
-                                                        <Button Content="Delete" 
-                                                                Background="#E05263" 
-                                                                Foreground="White" 
-                                                                CornerRadius="10" 
-                                                                Padding="20,10"
-                                                                FontWeight="SemiBold"
-                                                                Click="Delete_Click"/>
+                                                        <Button
+                                                            Background="#5068B0"
+                                                            Foreground="White"
+                                                            CornerRadius="10"
+                                                            Padding="20,10"
+                                                            FontWeight="SemiBold"
+                                                            Click="Edit_Click">
+                                                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                                                <Image
+                                                                    Source="avares://MCLauncher/ressources/icons/pen.png"
+                                                                    Height="20" />
+                                                                <TextBlock Text="Edit" VerticalAlignment="Center" />
+                                                            </StackPanel>
+                                                        </Button>
+
+                                                        <Button
+                                                            Background="#E05263"
+                                                            Foreground="White"
+                                                            CornerRadius="10"
+                                                            Padding="20,10"
+                                                            FontWeight="SemiBold"
+                                                            Click="Delete_Click">
+                                                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                                                <Image
+                                                                    Source="avares://MCLauncher/ressources/icons/trash.png"
+                                                                    Height="20" />
+                                                                <TextBlock Text="Delete" VerticalAlignment="Center" />
+                                                            </StackPanel>
+                                                        </Button>
                                                     </StackPanel>
                                                 </StackPanel>
                                             </Grid>
@@ -260,68 +280,59 @@
                     </Border>
                 </Grid>
             </Border>
-            
+
             <!-- Checkbox caché pour l'état du mode édition -->
-            <CheckBox x:Name="EditModeEnabled" IsVisible="False"/>
+            <CheckBox x:Name="EditModeEnabled" IsVisible="False" />
         </Grid>
 
         <!-- Bannière du bas (copyright, partenaires) -->
-        <Border Grid.Row="2" 
+        <Border Grid.Row="2"
                 Classes="GlassPanel"
-                Height="60" 
+                Height="60"
                 Padding="20,0">
             <Grid VerticalAlignment="Center">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                
+
                 <!-- Status text -->
-                <StackPanel Grid.Column="0" 
-                            Orientation="Horizontal" 
+                <StackPanel Grid.Column="0"
+                            Orientation="Horizontal"
                             VerticalAlignment="Center"
-                            HorizontalAlignment="Left" 
+                            HorizontalAlignment="Left"
                             Spacing="12">
-                    <Image Source="avares://MCLauncher/ressources/icons/console.png" 
-                           Width="24" 
+                    <Image Source="avares://MCLauncher/ressources/icons/console.png"
+                           Width="24"
                            Height="24" />
-                    <TextBlock x:Name="StatusText" 
-                              Text="Prêt à lancer..." 
-                              Foreground="White" 
-                              FontSize="14"
-                              VerticalAlignment="Center" />
+                    <TextBlock x:Name="StatusText"
+                               Text="Prêt à lancer..."
+                               Foreground="White"
+                               FontSize="14"
+                               VerticalAlignment="Center" />
                 </StackPanel>
-                
+
                 <!-- Copyright -->
-                <StackPanel Grid.Column="1" 
-                            Orientation="Horizontal" 
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
                             HorizontalAlignment="Center"
-                            VerticalAlignment="Center" 
+                            VerticalAlignment="Center"
                             Spacing="8">
-                    <TextBlock Text="Made by Yoann" 
-                              FontSize="14" 
-                              Foreground="White" 
-                              VerticalAlignment="Center" />
-                    <TextBlock Text="•" 
-                              FontSize="14" 
-                              Foreground="White" 
-                              VerticalAlignment="Center" />
-                    <TextBlock Text="Open Source" 
-                              FontSize="14" 
-                              Foreground="White" 
-                              VerticalAlignment="Center" />
-                    <TextBlock Text="•" 
-                              FontSize="14" 
-                              Foreground="White" 
-                              VerticalAlignment="Center" />
-                    <Button Background="Transparent" 
-                            BorderThickness="0" 
-                            Padding="0" 
+                    <TextBlock Text="Open Source"
+                               FontSize="14"
+                               Foreground="White"
+                               VerticalAlignment="Center" />
+                    <TextBlock Text="•"
+                               FontSize="14"
+                               Foreground="White"
+                               VerticalAlignment="Center" />
+                    <Button Background="Transparent"
+                            BorderThickness="0"
+                            Padding="0"
                             VerticalAlignment="Center"
                             Click="OpenGitHub">
-                        <Image Source="avares://MCLauncher/ressources/icons/github.png" 
-                               Width="32" 
+                        <Image Source="avares://MCLauncher/ressources/icons/github.png"
+                               Width="32"
                                Height="32" />
                     </Button>
                 </StackPanel>
