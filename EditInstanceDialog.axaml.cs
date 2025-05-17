@@ -20,6 +20,11 @@ namespace MCLauncher
             this.FindControl<Button>("CancelButton").Click += CancelButton_Click;
         }
 
+        private void InitializeComponent()
+        {
+            AvaloniaXamlLoader.Load(this);
+        }
+
         private void SaveButton_Click(object? sender, RoutedEventArgs e)
         {
             var nameTextBox = this.FindControl<TextBox>("InstanceNameTextBox");
