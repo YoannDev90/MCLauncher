@@ -11,10 +11,13 @@ namespace MCLauncher
         public string MessageTitle { get; }
         public string MessageText { get; }
         public string AdditionalText { get; }
-        
+        private void InitializeComponent()
+        {
+            AvaloniaXamlLoader.Load(this);
+        }
         public ConfirmationDialog(string title, string message, string additionalText = "")
         {
-            //InitializeComponent();
+            InitializeComponent();
             
             // Définir les propriétés pour le binding
             WindowTitle = title;

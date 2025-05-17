@@ -1,14 +1,15 @@
-using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using Avalonia.Controls;
+using Avalonia.Interactivity;
+using System;
+using Avalonia.Media;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Avalonia.Controls;
-using Avalonia.Interactivity;
-using Avalonia.Media;
 using Avalonia.Threading;
+using Avalonia;
 
 namespace MCLauncher;
 
@@ -18,9 +19,9 @@ public class MinecraftInstance
     public string Name { get; set; } = "";
     public string Version { get; set; } = "";
     public string Loader { get; set; } = "Vanilla";
-
+    
     public string VersionInfo => $"{Version} • {Loader}";
-
+    
     // Autres propriétés importantes pour le lancement
     public string Path { get; set; } = "";
     public string JavaPath { get; set; } = "";
@@ -30,8 +31,8 @@ public class MinecraftInstance
 
 public class RelayCommand : ICommand
 {
-    private readonly Func<object, bool> _canExecute;
     private readonly Action<object> _execute;
+    private readonly Func<object, bool> _canExecute;
 
     public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null)
     {
@@ -41,59 +42,50 @@ public class RelayCommand : ICommand
 
     public event EventHandler CanExecuteChanged;
 
-    public bool CanExecute(object parameter)
-    {
-        return _canExecute == null || _canExecute(parameter);
-    }
+    public bool CanExecute(object parameter) => _canExecute == null || _canExecute(parameter);
 
-    public void Execute(object parameter)
-    {
-        _execute(parameter);
-    }
+    public void Execute(object parameter) => _execute(parameter);
 
-    public void RaiseCanExecuteChanged()
-    {
-        CanExecuteChanged?.Invoke(this, EventArgs.Empty);
-    }
+    public void RaiseCanExecuteChanged() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
 }
 
 public partial class MainWindow : Window
 {
+    private bool editModeEnabled = false;
     private readonly string instancesFilePath;
-    private bool editModeEnabled;
-
-    public MainWindow()
-    {
-        InitializeComponent();
-
-        // Définir les commandes
-        LaunchCommand = new RelayCommand(Launch);
-        EditCommand = new RelayCommand(Edit);
-        DeleteCommand = new RelayCommand(Delete);
-
-        // Chemin du fichier des instances
-        instancesFilePath = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            "MCLauncher",
-            "instances.json");
-
-        // S'assurer que le dossier existe
-        Directory.CreateDirectory(Path.GetDirectoryName(instancesFilePath));
-
-        // Charger les instances
-        LoadInstances();
-
-        // Définir le DataContext pour la liaison de données
-        DataContext = this;
-    }
-
+    
     // Collection des instances Minecraft
-    public ObservableCollection<MinecraftInstance> Instances { get; } = new();
-
+    public ObservableCollection<MinecraftInstance> Instances { get; } = new ObservableCollection<MinecraftInstance>();
+    
     // Commandes pour les boutons
     public ICommand LaunchCommand { get; }
     public ICommand EditCommand { get; }
     public ICommand DeleteCommand { get; }
+
+    public MainWindow()
+    {
+        InitializeComponent();
+        
+        // Définir les commandes
+        LaunchCommand = new RelayCommand(Launch);
+        EditCommand = new RelayCommand(Edit);
+        DeleteCommand = new RelayCommand(Delete);
+        
+        // Chemin du fichier des instances
+        instancesFilePath = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            "MCLauncher", 
+            "instances.json");
+        
+        // S'assurer que le dossier existe
+        Directory.CreateDirectory(Path.GetDirectoryName(instancesFilePath));
+        
+        // Charger les instances
+        LoadInstances();
+        
+        // Définir le DataContext pour la liaison de données
+        DataContext = this;
+    }
 
     private void LoadInstances()
     {
@@ -103,12 +95,15 @@ public partial class MainWindow : Window
             {
                 var json = File.ReadAllText(instancesFilePath);
                 var instances = JsonSerializer.Deserialize<MinecraftInstance[]>(json);
-
+                
                 if (instances != null)
                 {
                     Instances.Clear();
-                    foreach (var instance in instances) Instances.Add(instance);
-
+                    foreach (var instance in instances)
+                    {
+                        Instances.Add(instance);
+                    }
+                    
                     StatusText.Text = $"Instances chargées : {Instances.Count}";
                 }
             }
@@ -123,7 +118,7 @@ public partial class MainWindow : Window
             StatusText.Text = "Erreur lors du chargement des instances";
         }
     }
-
+    
     private void SaveInstances()
     {
         try
@@ -131,11 +126,10 @@ public partial class MainWindow : Window
             var json = JsonSerializer.Serialize(Instances, new JsonSerializerOptions { WriteIndented = true });
             File.WriteAllText(instancesFilePath, json);
             StatusText.Text = "Instances sauvegardées";
-
+            
             // Notifier que les instances ont été mises à jour
             // Pour Avalonia, il faut utiliser le thread UI
-            Dispatcher.UIThread.Post(() =>
-            {
+            Dispatcher.UIThread.Post(() => {
                 // Forcer la mise à jour visuelle
                 var temp = InstancesRepeater.ItemsSource;
                 InstancesRepeater.ItemsSource = null;
@@ -166,7 +160,7 @@ public partial class MainWindow : Window
     {
         StatusText.Text = "Création d'une nouvelle instance...";
         var newInstanceWindow = new NewInstanceWindow();
-
+        
         // Abonnement à l'événement pour récupérer la nouvelle instance
         newInstanceWindow.InstanceCreated += (s, instance) =>
         {
@@ -177,7 +171,7 @@ public partial class MainWindow : Window
                 StatusText.Text = $"Instance '{instance.Name}' créée avec succès";
             }
         };
-
+        
         await newInstanceWindow.ShowDialog(this);
     }
 
@@ -193,10 +187,10 @@ public partial class MainWindow : Window
         try
         {
             StatusText.Text = "Ouverture des paramètres...";
-
+            
             // Créer une nouvelle instance de la fenêtre des paramètres
             var settingsWindow = new SettingsWindow();
-
+            
             // Afficher la fenêtre
             settingsWindow.Show();
         }
@@ -209,54 +203,70 @@ public partial class MainWindow : Window
 
     private void Launch_Click(object? sender, RoutedEventArgs e)
     {
-        if (sender is Button button && button.DataContext is MinecraftInstance instance) Launch(instance);
+        if (sender is Button button && button.DataContext is MinecraftInstance instance)
+        {
+            Launch(instance);
+        }
     }
 
     private async void Edit_Click(object? sender, RoutedEventArgs e)
     {
         if (sender is Button button && button.DataContext is MinecraftInstance instance)
-            Edit(instance);
+        {
+            await ShowEditInstanceDialog(instance);
+        }
     }
 
     private async void Delete_Click(object? sender, RoutedEventArgs e)
     {
         if (sender is Button button && button.DataContext is MinecraftInstance instance)
-            Delete(instance);
+        {
+            await ShowDeleteConfirmationDialog(instance);
+        }
     }
 
     private void Launch(object parameter)
     {
-        if (parameter is MinecraftInstance instance) StatusText.Text = $"Lancement de l'instance : {instance.Name}";
-        // Logique de lancement à ajouter
+        if (parameter is MinecraftInstance instance)
+        {
+            StatusText.Text = $"Lancement de l'instance : {instance.Name}";
+            // Logique de lancement à ajouter
+        }
     }
 
     private void Edit(object parameter)
     {
-        if (parameter is MinecraftInstance instance) StatusText.Text = $"Modification de l'instance : {instance.Name}";
-        // Logique d'édition à ajouter
+        if (parameter is MinecraftInstance instance)
+        {
+            StatusText.Text = $"Modification de l'instance : {instance.Name}";
+            // Logique d'édition à ajouter
+        }
     }
 
     private void Delete(object parameter)
     {
-        if (parameter is MinecraftInstance instance) StatusText.Text = $"Suppression de l'instance : {instance.Name}";
+        if (parameter is MinecraftInstance instance)
+        {
+            ShowDeleteConfirmationDialog(instance);
+        }
     }
 
     private async Task ShowEditInstanceDialog(MinecraftInstance instance)
     {
         // Créer une fenêtre de dialogue pour modifier le nom de l'instance
         var dialog = new EditInstanceDialog(instance.Name);
-
+        
         // Afficher la fenêtre et attendre le résultat
         var result = await dialog.ShowDialog<string>(this);
-
+        
         if (!string.IsNullOrWhiteSpace(result))
         {
             // Mettre à jour le nom de l'instance
             instance.Name = result;
-
+            
             // Sauvegarder les modifications
             SaveInstances();
-
+            
             StatusText.Text = $"Instance renommée en : {instance.Name}";
         }
     }
@@ -269,27 +279,27 @@ public partial class MainWindow : Window
             $"Êtes-vous sûr de vouloir supprimer l'instance '{instance.Name}'?",
             "Cette action est irréversible."
         );
-
+        
         // Afficher la fenêtre et attendre le résultat
         var result = await dialog.ShowDialog<bool>(this);
-
+        
         if (result)
         {
             // Supprimer l'instance
             Instances.Remove(instance);
-
+            
             // Sauvegarder les modifications
             SaveInstances();
-
+            
             StatusText.Text = $"Instance supprimée : {instance.Name}";
         }
     }
-
+    
     private void ToggleEditMode(object? sender, RoutedEventArgs e)
     {
         editModeEnabled = !editModeEnabled;
         EditModeEnabled.IsChecked = editModeEnabled;
-
+        
         // Mettre à jour l'apparence du bouton de mode édition
         if (editModeEnabled)
         {
