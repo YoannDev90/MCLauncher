@@ -262,7 +262,7 @@
                                                             CornerRadius="10" 
                                                             Padding="20,10"
                                                             FontWeight="SemiBold"
-                                                            CommandParameter="{Binding}"/>
+                                                            Click="Launch_Click"/>
                                                             
                                                     <StackPanel x:Name="EditButtons" 
                                                                 Orientation="Horizontal" 
@@ -274,7 +274,7 @@
                                                                 CornerRadius="10" 
                                                                 Padding="20,10"
                                                                 FontWeight="SemiBold"
-                                                                />
+                                                                Click="Edit_Click"/>
                                                                 
                                                         <Button Content="Delete" 
                                                                 Background="#E05263" 
@@ -282,7 +282,7 @@
                                                                 CornerRadius="10" 
                                                                 Padding="20,10"
                                                                 FontWeight="SemiBold"
-                                                                />
+                                                                Click="Delete_Click"/>
                                                     </StackPanel>
                                                 </StackPanel>
                                             </Grid>

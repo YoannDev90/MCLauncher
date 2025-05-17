@@ -1,0 +1,61 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="MCLauncher.EditInstanceDialog"
+        Title="Modifier l'instance"
+        Width="400" Height="200"
+        WindowStartupLocation="CenterOwner"
+        CanResize="False"
+        Background="#0F0F0F">
+    
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <!-- Titre -->
+        <TextBlock Grid.Row="0" 
+                   Text="Modifier l'instance" 
+                   FontSize="18" 
+                   FontWeight="Bold" 
+                   Foreground="White" 
+                   Margin="0,0,0,15"/>
+        
+        <!-- Champ de nom -->
+        <Grid Grid.Row="1" ColumnDefinitions="Auto,*" Margin="0,0,0,10">
+            <TextBlock Grid.Column="0" 
+                       Text="Nom:" 
+                       VerticalAlignment="Center" 
+                       Foreground="White" 
+                       Margin="0,0,10,0"/>
+            
+            <TextBox Grid.Column="1" 
+                     x:Name="InstanceNameTextBox" 
+                     Background="#22FFFFFF" 
+                     Foreground="White"
+                     CornerRadius="5"/>
+        </Grid>
+        
+        <!-- Boutons -->
+        <StackPanel Grid.Row="3" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right" 
+                    Spacing="10">
+            <Button x:Name="CancelButton" 
+                    Content="Annuler" 
+                    Width="100" 
+                    Background="#33F44336" 
+                    Foreground="White"
+                    CornerRadius="5"/>
+            
+            <Button x:Name="SaveButton" 
+                    Content="Enregistrer" 
+                    Width="100" 
+                    Background="#3300C853" 
+                    Foreground="White"
+                    CornerRadius="5"/>
+        </StackPanel>
+    </Grid>
+</Window>

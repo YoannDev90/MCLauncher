@@ -9,6 +9,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Threading;
+using Avalonia;
 
 namespace MCLauncher;
 
@@ -191,6 +192,30 @@ public partial class MainWindow : Window
         }
     }
 
+    private void Launch_Click(object? sender, RoutedEventArgs e)
+    {
+        if (sender is Button button && button.DataContext is MinecraftInstance instance)
+        {
+            Launch(instance);
+        }
+    }
+
+    private async void Edit_Click(object? sender, RoutedEventArgs e)
+    {
+        if (sender is Button button && button.DataContext is MinecraftInstance instance)
+        {
+            await ShowEditInstanceDialog(instance);
+        }
+    }
+
+    private async void Delete_Click(object? sender, RoutedEventArgs e)
+    {
+        if (sender is Button button && button.DataContext is MinecraftInstance instance)
+        {
+            await ShowDeleteConfirmationDialog(instance);
+        }
+    }
+
     private void Launch(object parameter)
     {
         if (parameter is MinecraftInstance instance)
@@ -213,8 +238,50 @@ public partial class MainWindow : Window
     {
         if (parameter is MinecraftInstance instance)
         {
-            Instances.Remove(instance);
+            ShowDeleteConfirmationDialog(instance);
+        }
+    }
+
+    private async Task ShowEditInstanceDialog(MinecraftInstance instance)
+    {
+        // Créer une fenêtre de dialogue pour modifier le nom de l'instance
+        var dialog = new EditInstanceDialog(instance.Name);
+        
+        // Afficher la fenêtre et attendre le résultat
+        var result = await dialog.ShowDialog<string>(this);
+        
+        if (!string.IsNullOrWhiteSpace(result))
+        {
+            // Mettre à jour le nom de l'instance
+            instance.Name = result;
+            
+            // Sauvegarder les modifications
             SaveInstances();
+            
+            StatusText.Text = $"Instance renommée en : {instance.Name}";
+        }
+    }
+
+    private async Task ShowDeleteConfirmationDialog(MinecraftInstance instance)
+    {
+        // Créer une fenêtre de dialogue de confirmation
+        var dialog = new ConfirmationDialog(
+            "Supprimer l'instance",
+            $"Êtes-vous sûr de vouloir supprimer l'instance '{instance.Name}'?",
+            "Cette action est irréversible."
+        );
+        
+        // Afficher la fenêtre et attendre le résultat
+        var result = await dialog.ShowDialog<bool>(this);
+        
+        if (result)
+        {
+            // Supprimer l'instance
+            Instances.Remove(instance);
+            
+            // Sauvegarder les modifications
+            SaveInstances();
+            
             StatusText.Text = $"Instance supprimée : {instance.Name}";
         }
     }
