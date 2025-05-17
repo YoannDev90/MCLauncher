@@ -37,22 +37,28 @@ public partial class NewInstanceWindow : Window
         SearchBox.KeyUp += (s, e) => FilterVersions();
 
         // Replace deprecated Checked events with IsCheckedChanged
-        NoLoaderRadio.IsCheckedChanged += (s, e) => {
+        NoLoaderRadio.IsCheckedChanged += (s, e) =>
+        {
             if (NoLoaderRadio.IsChecked == true) SetLoader("Vanilla");
         };
-        NeoForgeRadio.IsCheckedChanged += (s, e) => {
+        NeoForgeRadio.IsCheckedChanged += (s, e) =>
+        {
             if (NeoForgeRadio.IsChecked == true) SetLoader("NeoForge");
         };
-        ForgeRadio.IsCheckedChanged += (s, e) => {
+        ForgeRadio.IsCheckedChanged += (s, e) =>
+        {
             if (ForgeRadio.IsChecked == true) SetLoader("Forge");
         };
-        FabricRadio.IsCheckedChanged += (s, e) => {
+        FabricRadio.IsCheckedChanged += (s, e) =>
+        {
             if (FabricRadio.IsChecked == true) SetLoader("Fabric");
         };
-        QuiltRadio.IsCheckedChanged += (s, e) => {
+        QuiltRadio.IsCheckedChanged += (s, e) =>
+        {
             if (QuiltRadio.IsChecked == true) SetLoader("Quilt");
         };
-        LiteLoaderRadio.IsCheckedChanged += (s, e) => {
+        LiteLoaderRadio.IsCheckedChanged += (s, e) =>
+        {
             if (LiteLoaderRadio.IsChecked == true) SetLoader("LiteLoader");
         };
 
@@ -175,8 +181,7 @@ public partial class NewInstanceWindow : Window
         
         // Notifier de la création de l'instance
         InstanceCreated?.Invoke(this, instance);
-        
-        // Fermer la fenêtre
+
         Close();
     }
 }

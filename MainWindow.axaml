@@ -274,7 +274,6 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 
                 <!-- Status text -->
@@ -291,39 +290,6 @@
                               Foreground="White" 
                               FontSize="14"
                               VerticalAlignment="Center" />
-                </StackPanel>
-                
-                <!-- Copyright -->
-                <StackPanel Grid.Column="1" 
-                            Orientation="Horizontal" 
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center" 
-                            Spacing="8">
-                    <TextBlock Text="Made by Yoann" 
-                              FontSize="14" 
-                              Foreground="White" 
-                              VerticalAlignment="Center" />
-                    <TextBlock Text="•" 
-                              FontSize="14" 
-                              Foreground="White" 
-                              VerticalAlignment="Center" />
-                    <TextBlock Text="Open Source" 
-                              FontSize="14" 
-                              Foreground="White" 
-                              VerticalAlignment="Center" />
-                    <TextBlock Text="•" 
-                              FontSize="14" 
-                              Foreground="White" 
-                              VerticalAlignment="Center" />
-                    <Button Background="Transparent" 
-                            BorderThickness="0" 
-                            Padding="0" 
-                            VerticalAlignment="Center"
-                            Click="OpenGitHub">
-                        <Image Source="avares://MCLauncher/ressources/icons/github.png" 
-                               Width="32" 
-                               Height="32" />
-                    </Button>
                 </StackPanel>
             </Grid>
         </Border>

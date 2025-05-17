@@ -1,0 +1,64 @@
+{
+  "groups": [
+    {
+      "id": 554523222,
+      "name": "example_group"
+    },
+    {
+      "id": 554523223,
+      "name": "example_group_2"
+    }
+  ],
+  "instances": [
+    {
+      "name": "Instance 1",
+      "version": "1.0",
+      "loader": "example_loader",
+      "description": "This is the first instance.",
+      "group": "example_group",
+      "created": "2023-10-01T12:00:00Z",
+      "updated": "2023-10-01T12:00:00Z",
+      "metadata": {
+        "icon": "icon.png",
+        "last_time_launched": "2023-10-01T12:00:00Z",
+        "last_time_played": 3600,
+        "total_time_played": 7200,
+        "author": "Author"
+      },
+      "settings": {
+        "java": {
+          "java_auto_detect": true,
+          "ignore_java_compatibility": false,
+          "java_path": "C:\\Program Files\\Java\\jdk-17.0.1",
+          "java_architecture": "x64",
+          "java_version": "17.0.1",
+          "java_real_architecture": "amd64",
+          "java_signature": "5ce27cb3e208d205cb00a0cea56dea7317f5fda7",
+          "java_vendor": "Oracle",
+          "jvm_args": [
+            "-Xmx2048M",
+            "-XX:+UseG1GC",
+            "-XX:+UnlockExperimentalVMOptions",
+            "-XX:+UseCGroupMemoryLimitForHeap"
+          ]
+        },
+        "window": {
+          "width": 1280,
+          "height": 720,
+          "fullscreen": false,
+          "maximized": false,
+          "close_console": false,
+          "close_on_exit": false
+        },
+        "performance": {
+          "gpu": "auto",
+          "use_dedicated_gpu": true,
+          "memory": {
+            "max_memory": 2048,
+            "min_memory": 512
+          }
+        }
+      }
+    }
+  ]
+}
