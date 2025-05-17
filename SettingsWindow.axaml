@@ -219,6 +219,7 @@
                     <StackPanel Spacing="16" Margin="10">
                         <Border Classes="card">
                             <StackPanel>
+
                                 <TextBlock Text="MCLauncher" FontSize="24" FontWeight="Bold" />
                                 <TextBlock Text="Version 1.0.0" Opacity="0.7" Margin="0,4,0,0" />
 
@@ -235,8 +236,10 @@
                                 <Separator Background="#33FFFFFF" Height="1" Margin="0,16,0,16" />
 
                                 <StackPanel Orientation="Horizontal" Spacing="12" Margin="0,0,0,0">
-                                    <Button Content="Vérifier les mises à jour" Classes="animated" />
-                                    <Button Content="GitHub" Classes="animated" />
+
+                                    <Button Content="Vérifier les mises à jour" Classes="animated"/>
+                                    <Button Content="GitHub" Classes="animated" Click="OnGitHubLinkClicked"/>
+
                                 </StackPanel>
 
                                 <TextBlock Text="© 2025 Yoann Dumont. Sous licence MIT."
