@@ -126,6 +126,15 @@ public partial class MainWindow : Window
             var json = JsonSerializer.Serialize(Instances, new JsonSerializerOptions { WriteIndented = true });
             File.WriteAllText(instancesFilePath, json);
             StatusText.Text = "Instances sauvegardées";
+            
+            // Notifier que les instances ont été mises à jour
+            // Pour Avalonia, il faut utiliser le thread UI
+            Dispatcher.UIThread.Post(() => {
+                // Forcer la mise à jour visuelle
+                var temp = InstancesRepeater.ItemsSource;
+                InstancesRepeater.ItemsSource = null;
+                InstancesRepeater.ItemsSource = temp;
+            });
         }
         catch (Exception ex)
         {

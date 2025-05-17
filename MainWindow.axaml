@@ -7,7 +7,7 @@
         MinWidth="1000" MinHeight="650"
         WindowState="Maximized"
         TransparencyLevelHint="AcrylicBlur"
-        Background="DimGray"
+        Background="#1E1E1E"
         ExtendClientAreaToDecorationsHint="True"
         x:DataType="local:MainWindow">
 
@@ -113,46 +113,12 @@
                                 <DoubleTransition Property="Height" Duration="0:0:0.8" Easing="BounceEaseOut"/>
                             </Transitions>
                         </Image.Transitions>
-                        <Image.Styles>
-                            <Style Selector="Image">
-                                <Style.Animations>
-                                    <Animation Duration="0:0:6" 
-                                              IterationCount="Infinite">
-                                        <KeyFrame Cue="0%">
-                                            <Setter Property="RotateTransform.Angle" Value="0"/>
-                                        </KeyFrame>
-                                        <KeyFrame Cue="100%">
-                                            <Setter Property="RotateTransform.Angle" Value="360"/>
-                                        </KeyFrame>
-                                    </Animation>
-                                </Style.Animations>
-                            </Style>
-                        </Image.Styles>
                     </Image>
                     <TextBlock Text="MCLauncher" 
                                FontSize="32" 
                                FontWeight="Bold"
                                Foreground="White" 
-                               VerticalAlignment="Center">
-                        <TextBlock.Styles>
-                            <Style Selector="TextBlock">
-                                <Style.Animations>
-                                    <Animation Duration="0:0:3" 
-                                              IterationCount="Infinite">
-                                        <KeyFrame Cue="0%">
-                                            <Setter Property="Foreground" Value="White"/>
-                                        </KeyFrame>
-                                        <KeyFrame Cue="50%">
-                                            <Setter Property="Foreground" Value="#FFB9F3FF"/>
-                                        </KeyFrame>
-                                        <KeyFrame Cue="100%">
-                                            <Setter Property="Foreground" Value="White"/>
-                                        </KeyFrame>
-                                    </Animation>
-                                </Style.Animations>
-                            </Style>
-                        </TextBlock.Styles>
-                    </TextBlock>
+                               VerticalAlignment="Center" />
                 </StackPanel>
 
                 <!-- Boutons de droite -->

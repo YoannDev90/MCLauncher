@@ -1,14 +1,13 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:MCLauncher"
         x:Class="MCLauncher.ConfirmationDialog"
+        x:DataType="local:ConfirmationDialog"
         Title="{Binding WindowTitle}"
         Width="450" Height="220"
         WindowStartupLocation="CenterOwner"
         CanResize="False"
-        Background="#0F0F0F"
-        xmlns:local="using:MCLauncher"
-        x:DataType="local:MainWindow">
-    
+        Background="#0F0F0F">
     
     <Grid Margin="20">
         <Grid.RowDefinitions>

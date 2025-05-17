@@ -41,7 +41,7 @@
     </Style>
     
     <Style Selector="Button.FloatingActionButton:pointerover">
-        <Setter Property="RenderTransform" Value="scale(1.1) rotate(5deg)"/>
+        <Setter Property="RenderTransform" Value="scale(1.1)"/>
     </Style>
     
     <!-- Animation des instances au survol -->
@@ -61,7 +61,7 @@
 
     <!-- Style pour les fenêtres avec effet de verre -->
     <Style Selector="Window">
-        <Setter Property="Background" Value="#80000000"/>
+        <Setter Property="Background" Value="#1E1E1E"/>
         <Setter Property="TransparencyLevelHint" Value="AcrylicBlur"/>
         <Setter Property="ExtendClientAreaToDecorationsHint" Value="True"/>
         <Setter Property="ExtendClientAreaChromeHints" Value="PreferSystemChrome"/>
@@ -83,7 +83,7 @@
     
     <!-- Style pour les panneaux en verre -->
     <Style Selector="Border.GlassPanel">
-        <Setter Property="Background" Value="#80000000"/>
+        <Setter Property="Background" Value="#66000000"/>
         <Setter Property="CornerRadius" Value="12"/>
     </Style>
 </Styles>
