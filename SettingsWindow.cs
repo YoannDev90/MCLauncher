@@ -215,6 +215,10 @@ public partial class SettingsWindow : Window
         {
             var url = "https://github.com/YoannDev90/MCLauncher";
         }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Impossible d'ouvrir l'URL: {ex.Message}");
+        }
     }
 
     private void OnYoannLinkClicked(object? sender, RoutedEventArgs e)
