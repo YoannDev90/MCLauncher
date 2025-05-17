@@ -223,6 +223,20 @@ public partial class SettingsWindow : Window
             Debug.WriteLine($"Impossible d'ouvrir l'URL: {ex.Message}");
         }
     }
+
+    private void OnGitHubLinkClicked(object? sender, RoutedEventArgs e)
+    {
+        try
+        {
+            var url = "https://github.com/YoannDev90/MCLauncher";
+            var psi = new ProcessStartInfo(url) { UseShellExecute = true };
+            Process.Start(psi);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Impossible d'ouvrir l'URL: {ex.Message}");
+        }
+    }
     
     private void SelectJavaPath(object? sender, RoutedEventArgs e)
     {
