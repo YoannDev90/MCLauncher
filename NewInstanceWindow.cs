@@ -20,9 +20,6 @@ public partial class NewInstanceWindow : Window
     private readonly MinecraftLauncher _launcher;
     private string _selectedLoader = "Vanilla";
     private MinecraftVersion? _selectedVersion;
-    
-    // Événement pour notifier de la création d'une instance
-    public event EventHandler<MinecraftInstance> InstanceCreated;
 
     public NewInstanceWindow()
     {
@@ -62,12 +59,10 @@ public partial class NewInstanceWindow : Window
             if (LiteLoaderRadio.IsChecked == true) SetLoader("LiteLoader");
         };
 
-        // Configuration des handlers d'événements
         OkButton.Click += OkButton_Click;
         CancelButton.Click += (s, e) => Close();
-        VersionsListBox.SelectionChanged += VersionsListBox_SelectionChanged;
-        
-        // Chargement des versions
+        RefreshButton.Click += RefreshButton_Click;
+
         _ = LoadVersionsAsync();
     }
 
@@ -90,8 +85,9 @@ public partial class NewInstanceWindow : Window
         FilteredVersions.Clear();
         try
         {
-           var versions = await _launcher.GetAllVersionsAsync().ConfigureAwait(true);
-           foreach (var v in versions)
+            var versions = await _launcher.GetAllVersionsAsync();
+            Debug.WriteLine($"Nombre de versions trouvées : {versions}");
+            foreach (var v in versions)
                 if (v.Type == "release" || v.Type == "snapshot" || v.Type == "old_alpha" || v.Type == "old_beta")
                 {
                     var version = new MinecraftVersion
@@ -135,9 +131,9 @@ public partial class NewInstanceWindow : Window
         }
     }
 
-    private void VersionsListBox_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    private void VersionButton_Click(object? sender, RoutedEventArgs e)
     {
-        if (VersionsListBox.SelectedItem is MinecraftVersion version)
+        if (sender is Button btn && btn.DataContext is MinecraftVersion version)
         {
             _selectedVersion = version;
             Debug.WriteLine($"Version sélectionnée : {version.Name}");
@@ -147,40 +143,10 @@ public partial class NewInstanceWindow : Window
     private void OkButton_Click(object? sender, RoutedEventArgs e)
     {
         var instanceName = InstanceNameBox.Text;
-        
-        // Vérifie que le nom de l'instance n'est pas vide
-        if (string.IsNullOrWhiteSpace(instanceName))
-        {
-            // Afficher un message d'erreur
-            Debug.WriteLine("Le nom de l'instance ne peut pas être vide");
-            return;
-        }
-        
-        // Vérifie qu'une version a été sélectionnée
+        var loader = _selectedLoader;
+
         if (_selectedVersion == null)
-        {
-            // Afficher un message d'erreur
-            Debug.WriteLine("Aucune version sélectionnée");
             return;
-        }
-        
-        // Créer la nouvelle instance
-        var instance = new MinecraftInstance
-        {
-            Name = instanceName,
-            Version = _selectedVersion.Name,
-            Loader = _selectedLoader
-        };
-        
-        // Définir le chemin de l'instance (à adapter selon votre organisation de fichiers)
-        instance.Path = System.IO.Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            "MCLauncher",
-            "instances",
-            instance.Id);
-        
-        // Notifier de la création de l'instance
-        InstanceCreated?.Invoke(this, instance);
 
         Close();
     }

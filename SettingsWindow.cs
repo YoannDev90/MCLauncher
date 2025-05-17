@@ -209,18 +209,11 @@ public partial class SettingsWindow : Window
         }
     }
 
-    private void OnGitHubLinkClicked(object? sender, RoutedEventArgs e)
-    {
-        try
-        {
-            var url = "https://github.com/YoannDev90/MCLauncher";
-
     private void OnYoannLinkClicked(object? sender, RoutedEventArgs e)
     {
         try
         {
             var url = "https://github.com/YoannDev90";
-
             var psi = new ProcessStartInfo(url) { UseShellExecute = true };
             Process.Start(psi);
         }
